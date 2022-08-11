@@ -1,6 +1,6 @@
 {
-  "short_name": "nRF Robot Wars",
-  "name": "nRF Robot Wars Web Application",
+  "short_name": "Nordic Strava",
+  "name": "Nordic Strava Web Application",
   "icons": [
     {
       "src": "logo.svg",

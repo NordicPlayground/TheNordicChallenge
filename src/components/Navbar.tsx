@@ -59,23 +59,9 @@ export const Navbar = () => {
 						<div className="d-flex justify-content-between align-items-center">
 							<ul className="navbar-nav me-4">
 								<li className="nav-item">
-									<Link className="nav-link" to="/game" onClick={close}>
+									<Link className="nav-link" to="/strava" onClick={close}>
 										<IconWithText>
-											<GameIcon /> Game
-										</IconWithText>
-									</Link>
-								</li>
-								<li className="nav-item">
-									<Link className="nav-link" to="/controllers" onClick={close}>
-										<IconWithText>
-											<GameControllerIcon /> Game Controllers
-										</IconWithText>
-									</Link>
-								</li>
-								<li className="nav-item">
-									<Link className="nav-link" to="/settings" onClick={close}>
-										<IconWithText>
-											<SettingsIcon /> Settings
+											<GameIcon /> Strava
 										</IconWithText>
 									</Link>
 								</li>
@@ -83,6 +69,13 @@ export const Navbar = () => {
 									<Link className="nav-link" to="/about" onClick={close}>
 										<IconWithText>
 											<InfoIcon /> About
+										</IconWithText>
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link className="nav-link" to="/clubgoals" onClick={close}>
+										<IconWithText>
+											<InfoIcon /> Club Goals
 										</IconWithText>
 									</Link>
 								</li>
