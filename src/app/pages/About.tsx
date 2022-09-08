@@ -19,19 +19,20 @@ export const About = () => {
 			</div>
 			<div className="card mt-4">
 				<div className="card-header">Privacy Settings</div>
-				<div className="card-body"></div>
-				<dl>
+				<div className="card-body">
 					<p>Strava has three different privacy options: </p>
 					<ul>
 						<li>Everyone</li>
 						<li>Followers</li>
 						<li>Only you</li>
 					</ul>
-					If you have the "Everyone" option your statistics will be included. If
-					you have the "Followers" option, you need to follow Lena Haraldseid in
-					your local club. The "Only you" option will not be part of the club
-					statistics.
-				</dl>
+					<p>
+						If you have the "Everyone" option your statistics will be included.
+						If you have the "Followers" option, you need to follow Lena
+						Haraldseid in your local club. The "Only you" option will not be
+						part of the club statistics.
+					</p>
+				</div>
 			</div>
 			<div className="card mt-4">
 				<div className="card-header">Rules</div>
