@@ -44,7 +44,11 @@ export const Strava = () => {
 	}, [exp])
 
 	if (data?.weekly_summary === undefined) {
-		return
+		return (
+			<>
+				<h1>Data undefined</h1>
+			</>
+		)
 	}
 	const weekly_summary1 = data?.weekly_summary[0].updates
 	const sortedDataWeek1 = (weekly_summary1 ?? []).sort(
