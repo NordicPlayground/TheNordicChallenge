@@ -8,12 +8,26 @@ export const About = () => {
 				<div className="card-body">
 					<p>
 						Each week the kilometers for each club will be added up and then
-						divided by the size of the office/location headcount. The club with
-						the highest average will be declared a winner by the competition
-						committee. As biking is more efficient in km than running/walking,
-						we will be using a ratio for cycling amount, and for each 3km cycled
-						= 1km run/walk. For the same reason, 1km of swimming equals 4km of
+						divided by the size of the office/location headcount.
+						<br />
+						As biking/skiing is more efficient in km than running/walking, we
+						will be using a ratio for this, and for each 3km cycled = 1km
+						run/walk. This ratio counts for the following activities:{' '}
+						<b>Ride</b>, <b>Virtual Bike</b>, <b>Roller Ski</b>,
+						<b> Nordic Ski</b>, <b>BackCountry Ski</b> and{' '}
+						<b>Mountain Bike Ride</b>
+						.
+						<br />
+						For the same reason, 1km of <b>swimming</b> equals 4km of
 						running/walking.
+						<br />
+						<b> E-Bike Ride </b> has a 5:1 km ratio.
+						<br />
+						<b> Snowboard </b>
+						and <b>Alpine Ski</b> is given 0km in the statistics.
+						<br /> All time spent doing activities counts towards the
+						statistics, and all activities not mentioned above will give a 1:1km
+						ratio in the statistics.
 					</p>
 				</div>
 			</div>
@@ -28,9 +42,11 @@ export const About = () => {
 					</ul>
 					<p>
 						If you have the "Everyone" option your statistics will be included.
-						If you have the "Followers" option, you need to follow Lena
-						Haraldseid in your local club. The "Only you" option will not be
-						part of the club statistics.
+						If you have the "Followers" option, you need to follow Strava Lena
+						in your local club, and let her follow you back to be included in
+						the statistics. The "Only you" option will not be part of the club
+						statistics.
+						<strong> Muted activited is not included in the statistics.</strong>
 					</p>
 				</div>
 			</div>
@@ -39,7 +55,9 @@ export const About = () => {
 				<div className="card-body">
 					<dl>
 						<ul>
-							<li>The challenge starts ??? and ends ???.</li>
+							<li>
+								The challenge starts Semptember 19th and ends October 16th.
+							</li>
 							<li>
 								You need a user account on Strava to participate{' '}
 								<a href="https://www.strava.com">www.strava.com</a>
@@ -67,10 +85,14 @@ export const About = () => {
 								leaderboard in your club.
 							</li>
 							<li>
-								Remember to check your privacy setting, if they are not open
+								Remember to check your privacy settings, if they are not open
 								your activities will not count. If you are unsure whether your
-								activities register, follow Lena Haraldseid in your Strava club
-								(this will fix it most times).
+								activities register, follow Strava Lena in your Strava club
+								(this will fix it most times). Muted activities does not count
+								it looks like. If you have privacy setting set to “everyone”
+								everything will count. If you do not want to have that, you can
+								set it to “follower”, but then you have to follow Strava Lena
+								and let her follow you back.
 							</li>
 							<li>
 								If you do not know Strava, ask a colleague or do a quick search,
