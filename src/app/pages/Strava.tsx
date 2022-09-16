@@ -17,7 +17,7 @@ import 'react-circular-progressbar/dist/styles.css'
 import { weekNumber } from 'utils/getWeek'
 import { HourlyPoints } from 'utils/hourlyPoints'
 import type { GraphData } from 'utils/pointData2GraphData.js'
-import './Strava.css'
+import 'app/pages/Strava.css'
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
@@ -81,7 +81,7 @@ export const Strava = () => {
 	const weeklyHoursSorted = (hourSummary ?? []).sort(
 		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
 	)
-	
+
 	const sortedDataWeek1 = (summary ?? []).sort(
 		(a: { clubPoints: number }, b: { clubPoints: number }) =>
 			b.clubPoints - a.clubPoints,
