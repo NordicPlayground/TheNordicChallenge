@@ -9,7 +9,7 @@ import styles from 'components/Navbar.module.css'
 import { useAppConfig } from 'hooks/useAppConfig'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '/logo-white-outline.svg'
+import logo from '/Logo_Solid_White_H.svg'
 
 export const Navbar = () => {
 	const {
@@ -34,7 +34,7 @@ export const Navbar = () => {
 						<img
 							src={logo}
 							alt={name}
-							width="30"
+							width="100"
 							height="24"
 							className="d-inline-block align-text-top me-1"
 						/>
@@ -69,13 +69,6 @@ export const Navbar = () => {
 									<Link className="nav-link" to="/about" onClick={close}>
 										<IconWithText>
 											<InfoIcon /> About
-										</IconWithText>
-									</Link>
-								</li>
-								<li className="nav-item">
-									<Link className="nav-link" to="/clubgoals" onClick={close}>
-										<IconWithText>
-											<InfoIcon /> Club Goals
 										</IconWithText>
 									</Link>
 								</li>
