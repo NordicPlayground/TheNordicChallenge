@@ -1,10 +1,4 @@
-import {
-	GameControllerIcon,
-	GameIcon,
-	IconWithText,
-	InfoIcon,
-	SettingsIcon,
-} from 'components/FeatherIcon'
+import { GameIcon, IconWithText, InfoIcon } from 'components/FeatherIcon'
 import styles from 'components/Navbar.module.css'
 import { useAppConfig } from 'hooks/useAppConfig'
 import { useState } from 'react'
