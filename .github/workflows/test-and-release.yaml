@@ -43,7 +43,7 @@ jobs:
           path: build
 
       - name: Publish to GitHub pages
-        if: github.ref == 'refs/heads/saga'
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "machine github.com login accesskey password ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
           git config --global user.email "actions@example.com"
