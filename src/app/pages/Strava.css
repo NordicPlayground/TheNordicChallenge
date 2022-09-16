@@ -1,0 +1,33 @@
+th,td{
+    padding: 0.4em 1em;
+ }
+
+ .HoursTable{
+    height: 200px;
+    width: 200px;
+    background-color:  rgb(0 169 206 / 31%);
+    border-radius: 10px
+ }
+ .ProgressBar{
+    width: 200px;
+    height: 200px;
+
+ }
+
+@media only screen and (max-width: 500px) {
+    th,td {
+       padding-left: 0;
+       padding-right: 0;
+    }
+    .HoursTable {
+        height: 150px;
+        width: 150px;
+        padding: 0
+    }   
+    .ProgressBar{
+        width: 150px;
+        height: 150px;
+    }
+
+ }
+
