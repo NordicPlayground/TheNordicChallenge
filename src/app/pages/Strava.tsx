@@ -1,3 +1,4 @@
+import 'app/pages/Strava.css'
 import axios from 'axios'
 import {
 	CategoryScale,
@@ -17,7 +18,6 @@ import 'react-circular-progressbar/dist/styles.css'
 import { weekNumber } from 'utils/getWeek'
 import { HourlyPoints } from 'utils/hourlyPoints'
 import type { GraphData } from 'utils/pointData2GraphData.js'
-import 'app/pages/Strava.css'
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
@@ -74,7 +74,7 @@ export const Strava = () => {
 			</Main>
 		)
 	}
-	
+
 	const summary = data?.summary
 	const hourSummary = [...summary]
 

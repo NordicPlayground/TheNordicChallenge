@@ -1,17 +1,10 @@
+import { teamColors } from "./teamColors"
+
 export type PointData = {
 	week: number
 	club: string
 	points: number
 }[]
-
-const teamColors = {
-	Trondheim: {
-		color: 'rgb(0 169 206)',
-	},
-	Oslo: {
-		color: 'rgb(255,205,0)',
-	},
-}
 
 export const pointData2GraphData = (data: PointData): GraphData => {
 	const result: GraphData = {} as any
@@ -36,7 +29,7 @@ export const pointData2GraphData = (data: PointData): GraphData => {
 				label: clubName,
 				data: [0, weeklyData.points],
 				fill: false,
-				borderColor: teamColors.Trondheim.color,
+				borderColor: teamColors[clubName],
 				tension: 0.1,
 			})
 		}
