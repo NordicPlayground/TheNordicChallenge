@@ -1,6 +1,7 @@
 import { About } from 'app/pages/About'
 import { Strava } from 'app/pages/Strava'
 import { Navbar } from 'components/Navbar'
+import { RedirectFrom404 } from 'components/RedirectFrom404'
 import { useAppConfig } from 'hooks/useAppConfig'
 import {
 	BrowserRouter as Router,
@@ -22,6 +23,7 @@ export const App = () => {
 				<Route path="/about" element={<About />} />
 				<Route path="/clubgoals" element={<ClubGoals />} />
 			</Routes>
+			<RedirectFrom404 />
 		</Router>
 	)
 }
