@@ -1,4 +1,4 @@
-import { PointData, pointData2GraphData } from './pointData2GraphData'
+import { PointData, pointData2GraphData } from 'utils/pointData2GraphData.js'
 
 describe('pointData2GraphData()', () => {
 	it('should convert point data to graph data', () => {
@@ -39,7 +39,7 @@ describe('pointData2GraphData()', () => {
 					label: 'Oslo',
 					data: [0, 0.7, 4.4],
 					fill: false,
-					borderColor: 'rgb(0 169 206)',
+					borderColor: 'rgb(255,205,0)',
 					tension: 0.1,
 				},
 			],

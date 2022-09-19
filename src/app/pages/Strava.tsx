@@ -1,3 +1,4 @@
+import 'app/pages/Strava.css'
 import axios from 'axios'
 import {
 	CategoryScale,
@@ -15,9 +16,13 @@ import { Line } from 'react-chartjs-2'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { weekNumber } from 'utils/getWeek'
-import { HourlyPoints } from 'utils/hourlyPoints'
-import type { GraphData } from 'utils/pointData2GraphData.js'
-import 'app/pages/Strava.css'
+import { HourlyPoints, SummaryData } from 'utils/hourlyPoints'
+import {
+	GraphData,
+	PointData,
+	pointData2GraphData,
+} from 'utils/pointData2GraphData.js'
+import { summaryDataToPointData } from 'utils/summaryDataToPointData'
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
@@ -51,7 +56,6 @@ export const Strava = () => {
 		const result = await axios.get<StravaObject>(
 			`https://lenakh97.github.io/Nordic-strava-application/summary-week-${weekNumber}.json?`,
 		)
-
 		setData(result.data)
 		setExp(parseInt(result.headers['cache-control'].split('=')[1], 10))
 	}
@@ -62,7 +66,6 @@ export const Strava = () => {
 		}
 		const interval = setInterval(() => {
 			fetchData().catch(console.error)
-			HourlyPoints(weeklyHoursSorted, summary)
 		}, exp * 1000)
 		return () => clearInterval(interval)
 	}, [exp])
@@ -74,90 +77,20 @@ export const Strava = () => {
 			</Main>
 		)
 	}
-	
-	const summary = data?.summary
+
+	const summary: SummaryData = data?.summary
 	const hourSummary = [...summary]
 
 	const weeklyHoursSorted = (hourSummary ?? []).sort(
 		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
 	)
 
-	const sortedDataWeek1 = (summary ?? []).sort(
-		(a: { clubPoints: number }, b: { clubPoints: number }) =>
-			b.clubPoints - a.clubPoints,
-	)
-	/*
-	const labels: (string | undefined)[] = summary.map(
-		(item: { name: string }) => {
-			return item.name.split('-').pop()
-		},
-	)
-	const pointData: Number[] = summary.map((item: { clubPoints: number }) => {
-		return item.clubPoints
-	})
-*/
-
-	const graphData: GraphData = {
-		labels: ['', 'week1', 'week2', 'week3', 'week4'],
-		datasets: [
-			{
-				label: 'Trondheim',
-				data: [0, 1.4 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: 'rgb(0 169 206)',
-				tension: 0.1,
-			},
-			{
-				label: 'Oslo',
-				data: [0, 0.9 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: 'rgb(255,205,0)',
-				tension: 0.1,
-			},
-			{
-				label: 'Finland',
-				data: [0, 1.8 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: '#D0DF00',
-				tension: 0.1,
-			},
-			{
-				label: 'Poland',
-				data: [0, 1.9 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: '#EE2F4E',
-				tension: 0.1,
-			},
-			{
-				label: 'APAC',
-				data: [0, 0.7 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: '#F58220',
-				tension: 0.1,
-			},
-			{
-				label: 'Europe',
-				data: [0, 0.3 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: '#0033A0',
-				tension: 0.1,
-			},
-			{
-				label: 'USA',
-				data: [0, 0.3 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: '#0077C8',
-				tension: 0.1,
-			},
-			{
-				label: 'Omega NTNU',
-				data: [0, 1.3 /*,points week2, points week3, points week4 */],
-				fill: false,
-				borderColor: '#6AD1E3',
-				tension: 0.1,
-			},
-		],
-	}
+	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
+	const graphSummaryData: StravaObject = { ...data }
+	graphSummaryData.summary = sortedDataForGraph
+	const summaryDataForGraph: StravaObject[] = [graphSummaryData]
+	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
+	const graphData: GraphData = pointData2GraphData(pointData)
 
 	const options = {
 		responsive: true,
@@ -180,6 +113,7 @@ export const Strava = () => {
 			},
 		},
 	}
+
 	return (
 		<Main>
 			<>
@@ -192,7 +126,15 @@ export const Strava = () => {
 						alignItems: 'center',
 					}}
 				>
-					<div>
+					<div
+						className="progdiv"
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+						}}
+					>
 						<h1>Distance goal</h1>
 						<div className="ProgressBar">
 							<CircularProgressbar
@@ -224,12 +166,20 @@ export const Strava = () => {
 						</div>
 					</div>
 					<div>
-						<h1>Hours</h1>
+						<h1
+							style={{
+								display: 'flex',
+								justifyContent: 'space-around',
+								alignItems: 'center',
+							}}
+						>
+							Time
+						</h1>
 						<table className="HoursTable">
 							<thead>
 								<tr>
 									<th style={{ padding: '2px 10px' }}>Strava club</th>
-									<th style={{ padding: '2px 10px' }}>Hours</th>
+									<th style={{ padding: '2px 10px' }}>Minutes</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -240,8 +190,11 @@ export const Strava = () => {
 											<td style={{ padding: '2px 10px' }} key={item.name}>
 												{item.name.split('-').pop()}
 											</td>
-											<td style={{ padding: '2px 10px' }} key={item.hours}>
-												{Math.round(item.hours)}
+											<td
+												style={{ padding: '2px 10px', textAlign: 'right' }}
+												key={item.hours}
+											>
+												{Math.round(item.hours * 60)}
 											</td>
 										</tr>
 									))}
@@ -252,7 +205,7 @@ export const Strava = () => {
 				<br />
 				<br />
 				<br />
-				<Line style={{ height: '500px' }} options={options} data={graphData} />
+				<Line style={{ height: '1000px' }} options={options} data={graphData} />
 				<br />
 				<br />
 				<div
@@ -267,15 +220,17 @@ export const Strava = () => {
 					<table>
 						<thead style={{ backgroundColor: 'rgba(0, 169, 206, 0.31)' }}>
 							<tr>
-								<th>Strava club</th>
-								<th>Points</th>
-								<th>Distance</th>
-								<th>Hours</th>
-								<th>Elevation</th>
+								<th>Team</th>
+								<th>Pts.</th>
+								<th>Dist. (km)</th>
+								<th>
+									<abbr title="Minutes">Min.</abbr>
+								</th>
+								<th>Total</th>
 							</tr>
 						</thead>
 						<tbody>
-							{sortedDataWeek1.map(
+							{sortedDataForGraph.map(
 								(item: {
 									name: string
 									distance: number
@@ -285,10 +240,21 @@ export const Strava = () => {
 								}) => (
 									<tr>
 										<td key={item.name}>{item.name.split('-').pop()}</td>
-										<td key={item.clubPoints}>{item.clubPoints.toFixed(1)}</td>
-										<td key={item.distance}>{Math.round(item.distance)} km</td>
-										<td key={item.hours}>{Math.round(item.hours)}</td>
-										<td key={item.elevation}>{Math.round(item.elevation)} m</td>
+										<td key={item.clubPoints} style={{ textAlign: 'right' }}>
+											{item.clubPoints.toFixed(1)}
+										</td>
+										<td key={item.distance} style={{ textAlign: 'right' }}>
+											{Math.round(item.distance)}
+										</td>
+										<td key={item.hours} style={{ textAlign: 'right' }}>
+											{Math.round(item.hours * 60)}
+										</td>
+										<td
+											key={item.clubPoints - 2}
+											style={{ textAlign: 'right' }}
+										>
+											{item.clubPoints.toFixed(1)}
+										</td>
 									</tr>
 								),
 							)}
