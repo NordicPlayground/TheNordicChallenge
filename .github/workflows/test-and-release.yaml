@@ -34,7 +34,7 @@ jobs:
       - name: Build
         env:
           PUBLIC_VERSION: ${{ github.sha }}
-          BASE_URL: /${{ github.event.repository.name }}/
+          BASE_URL: /${{ github.event.repository.name }}
         run: npm run build
 
       - uses: actions/upload-artifact@v3
