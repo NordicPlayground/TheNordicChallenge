@@ -1,4 +1,4 @@
-import { teamColors } from "./teamColors"
+import { teamColors } from 'utils/teamColors.js'
 
 export type PointData = {
 	week: number
@@ -34,7 +34,6 @@ export const pointData2GraphData = (data: PointData): GraphData => {
 			})
 		}
 	}
-	console.log(result.datasets)
 	return result
 }
 
