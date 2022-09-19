@@ -1,5 +1,4 @@
 import 'app/pages/Strava.css'
-import axios from 'axios'
 import {
 	CategoryScale,
 	Chart as ChartJS,
@@ -53,11 +52,16 @@ export const Strava = () => {
 		totalDist2022 = 0
 	}
 	const fetchData = async () => {
-		const result = await axios.get<StravaObject>(
+		const result = await fetch(
 			`https://lenakh97.github.io/Nordic-strava-application/summary-week-${weekNumber}.json?`,
 		)
-		setData(result.data)
-		setExp(parseInt(result.headers['cache-control'].split('=')[1], 10))
+		setData(await result.json())
+		setExp(
+			parseInt(
+				result?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
+				10,
+			),
+		)
 	}
 	useEffect(() => {
 		if (exp === undefined) {
