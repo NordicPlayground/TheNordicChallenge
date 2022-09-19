@@ -9,25 +9,28 @@ export const About = () => {
 					<p>
 						Each week the kilometers for each club will be added up and then
 						divided by the size of the office/location headcount.
-						<br />
+					</p>
+					<p>
 						As biking/skiing is more efficient in km than running/walking, we
 						will be using a ratio for this, and for each 3km cycled = 1km
-						run/walk. This ratio counts for the following activities:{' '}
-						<b>Ride</b>, <b>Virtual Bike</b>, <b>Roller Ski</b>,
-						<b> Nordic Ski</b>, <b>BackCountry Ski</b> and{' '}
-						<b>Mountain Bike Ride</b>
-						.
-						<br />
-						For the same reason, 1km of <b>swimming</b> equals 4km of
-						running/walking.
-						<br />
+						run/walk.{' '}
+					</p>
+					<p>
+						This ratio counts for the following activities: <b>Ride</b>,{' '}
+						<b>Virtual Bike</b>, <b>Roller Ski</b>,<b> Nordic Ski</b>,{' '}
+						<b>BackCountry Ski</b> and <b>Mountain Bike Ride</b>.
+					</p>
+					For the same reason, 1km of <b>swimming</b> equals 4km of
+					running/walking.
+					<p>
 						<b> E-Bike Ride </b> has a 5:1 km ratio.
-						<br />
-						<b> Snowboard </b>
-						and <b>Alpine Ski</b> is given 0km in the statistics.
-						<br /> All time spent doing activities counts towards the
-						statistics, and all activities not mentioned above will give a 1:1km
-						ratio in the statistics.
+					</p>
+					<b> Snowboard </b>
+					and <b>Alpine Ski</b> is given 0km in the statistics.
+					<p>
+						All time spent doing activities counts towards the statistics, and
+						all activities not mentioned above will give a 1:1km ratio in the
+						statistics.
 					</p>
 				</div>
 			</div>
