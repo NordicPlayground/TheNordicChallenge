@@ -1,5 +1,5 @@
 {
-  "name": "@nordicsemiconductor/nrf-robot-wars-app",
+  "name": "@nordicplayground/strava-challenge-2022",
   "version": "0.0.0-development",
   "description": "A single-page application (SPA) developed using TypeScript to play a game of nRF Robot Wars.",
   "type": "module",
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lenakh97/Strava_application.git"
+    "url": "git+https://github.com/NordicPlayground/StravaChallenge2022.git"
   },
   "bugs": {
-    "url": "https://github.com/Lenakh97/Strava_application/issues"
+    "url": "https://github.com/NordicPlayground/StravaChallenge2022/issues"
   },
-  "homepage": "https://github.com/Lenakh97/Strava_application#readme",
+  "homepage": "https://github.com/NordicPlayground/StravaChallenge2022#readme",
   "keywords": [
     "nrf-asset-tracker",
     "iot",
