@@ -15,10 +15,7 @@ th,td{
  }
 
 @media only screen and (max-width: 500px) {
-    th,td {
-       padding-left: 0;
-       padding-right: 0;
-    }
+    
     .HoursTable {
         height: 150px;
         width: 150px;
