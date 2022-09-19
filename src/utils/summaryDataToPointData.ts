@@ -2,18 +2,10 @@ import type { StravaObject } from 'app/pages/Strava'
 import { getWeek } from 'date-fns'
 import type { PointData } from 'utils/pointData2GraphData.js'
 
-export type SummaryData = {
-	name: string
-	distance: number
-	hours: number
-	clubPoints: number
-	elevation: number
-}[]
-
 export const summaryDataToPointData = (
 	data: StravaObject[],
 ): PointData | undefined => {
-	const result: PointData = [] as any
+	const result: PointData = []
 	if (data === undefined) {
 		return
 	}
