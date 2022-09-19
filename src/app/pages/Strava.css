@@ -27,6 +27,10 @@ th,td{
     .ProgressBar{
         width: 150px;
         height: 150px;
+        margin-bottom: 20px;
+    }
+    .progdiv{
+      height: 230px;
     }
 
  }
