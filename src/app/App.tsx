@@ -1,4 +1,5 @@
 import { About } from 'app/pages/About'
+import { ClubGoals } from 'app/pages/Clubgoals'
 import { Strava } from 'app/pages/Strava'
 import { Navbar } from 'components/Navbar'
 import { RedirectFrom404 } from 'components/RedirectFrom404'
@@ -9,13 +10,12 @@ import {
 	Route,
 	Routes,
 } from 'react-router-dom'
-import { ClubGoals } from './pages/Clubgoals'
 
 export const App = () => {
 	const { basename } = useAppConfig()
 
 	return (
-		<Router basename={basename}>
+		<Router basename={(basename ?? '').replace(/\/$/g, '')}>
 			<Navbar />
 			<Routes>
 				<Route index element={<Navigate to="/strava" />} />
