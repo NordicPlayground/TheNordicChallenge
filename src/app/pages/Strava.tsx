@@ -16,7 +16,7 @@ import { Line } from 'react-chartjs-2'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { weekNumber } from 'utils/getWeek'
-import { HourlyPoints } from 'utils/hourlyPoints'
+import { HourlyPoints, SummaryData } from 'utils/hourlyPoints'
 import {
 	GraphData,
 	PointData,
@@ -78,19 +78,17 @@ export const Strava = () => {
 		)
 	}
 
-	const summary = data?.summary
+	const summary: SummaryData = data?.summary
 	const hourSummary = [...summary]
 
 	const weeklyHoursSorted = (hourSummary ?? []).sort(
 		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
 	)
 
-	HourlyPoints(weeklyHoursSorted, summary)
-	const sortedDataWeek1 = (summary ?? []).sort(
-		(a: { clubPoints: number }, b: { clubPoints: number }) =>
-			b.clubPoints - a.clubPoints,
-	)
-	const summaryDataForGraph: StravaObject[] = [data]
+	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
+	const graphSummaryData: StravaObject = { ...data }
+	graphSummaryData.summary = sortedDataForGraph
+	const summaryDataForGraph: StravaObject[] = [graphSummaryData]
 	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
 	const graphData: GraphData = pointData2GraphData(pointData)
 
@@ -192,7 +190,10 @@ export const Strava = () => {
 											<td style={{ padding: '2px 10px' }} key={item.name}>
 												{item.name.split('-').pop()}
 											</td>
-											<td style={{ padding: '2px 10px' }} key={item.hours}>
+											<td
+												style={{ padding: '2px 10px', textAlign: 'right' }}
+												key={item.hours}
+											>
 												{Math.round(item.hours * 60)}
 											</td>
 										</tr>
@@ -204,7 +205,7 @@ export const Strava = () => {
 				<br />
 				<br />
 				<br />
-				<Line style={{ height: '500px' }} options={options} data={graphData} />
+				<Line style={{ height: '1000px' }} options={options} data={graphData} />
 				<br />
 				<br />
 				<div
@@ -219,15 +220,17 @@ export const Strava = () => {
 					<table>
 						<thead style={{ backgroundColor: 'rgba(0, 169, 206, 0.31)' }}>
 							<tr>
-								<th>Strava club</th>
-								<th>Points</th>
-								<th>Distance</th>
-								<th>Minutes</th>
-								<th>Total points</th>
+								<th>Team</th>
+								<th>Pts.</th>
+								<th>Dist. (km)</th>
+								<th>
+									<abbr title="Minutes">Min.</abbr>
+								</th>
+								<th>Total</th>
 							</tr>
 						</thead>
 						<tbody>
-							{sortedDataWeek1.map(
+							{sortedDataForGraph.map(
 								(item: {
 									name: string
 									distance: number
@@ -237,10 +240,19 @@ export const Strava = () => {
 								}) => (
 									<tr>
 										<td key={item.name}>{item.name.split('-').pop()}</td>
-										<td key={item.clubPoints}>{item.clubPoints.toFixed(1)}</td>
-										<td key={item.distance}>{Math.round(item.distance)} km</td>
-										<td key={item.hours}>{Math.round(item.hours * 60)}</td>
-										<td key={item.clubPoints - 2}>
+										<td key={item.clubPoints} style={{ textAlign: 'right' }}>
+											{item.clubPoints.toFixed(1)}
+										</td>
+										<td key={item.distance} style={{ textAlign: 'right' }}>
+											{Math.round(item.distance)}
+										</td>
+										<td key={item.hours} style={{ textAlign: 'right' }}>
+											{Math.round(item.hours * 60)}
+										</td>
+										<td
+											key={item.clubPoints - 2}
+											style={{ textAlign: 'right' }}
+										>
 											{item.clubPoints.toFixed(1)}
 										</td>
 									</tr>
