@@ -189,8 +189,8 @@ export const Strava = () => {
 							<tbody>
 								{weeklyHoursSorted
 									.slice(0, 4)
-									.map((item: { name: string; hours: number }) => (
-										<tr>
+									.map((item: { name: string; hours: number }, k) => (
+										<tr key={k}>
 											<td style={{ padding: '2px 10px' }} key={item.name}>
 												{item.name.split('-').pop()}
 											</td>
@@ -235,14 +235,17 @@ export const Strava = () => {
 						</thead>
 						<tbody>
 							{sortedDataForGraph.map(
-								(item: {
-									name: string
-									distance: number
-									hours: number
-									clubPoints: number
-									elevation: number
-								}) => (
-									<tr>
+								(
+									item: {
+										name: string
+										distance: number
+										hours: number
+										clubPoints: number
+										elevation: number
+									},
+									k,
+								) => (
+									<tr key={k}>
 										<td key={item.name}>{item.name.split('-').pop()}</td>
 										<td key={item.clubPoints} style={{ textAlign: 'right' }}>
 											{item.clubPoints.toFixed(1)}
