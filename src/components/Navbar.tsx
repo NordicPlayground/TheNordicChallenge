@@ -3,7 +3,7 @@ import styles from 'components/Navbar.module.css'
 import { useAppConfig } from 'hooks/useAppConfig'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '/Logo_Solid_White_H.svg'
+import logo from '/logo-with-text.svg'
 
 export const Navbar = () => {
 	const {
