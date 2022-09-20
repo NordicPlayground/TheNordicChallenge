@@ -220,7 +220,7 @@ export const Strava = () => {
 						alignItems: 'center',
 					}}
 				>
-					<h1>Results week {weekNumber}</h1>
+					<h1>Results week {weekNumber - 1}</h1>
 					<table>
 						<thead style={{ backgroundColor: 'rgba(0, 169, 206, 0.31)' }}>
 							<tr>
