@@ -55,22 +55,22 @@ describe('summaryDataToPointData()', () => {
 
 		expect(summaryDataToPointData(summaries)).toMatchObject([
 			{
-				week: 38,
+				week: 37,
 				club: 'Trondheim',
 				points: 1.4,
 			},
 			{
-				week: 38,
+				week: 37,
 				club: 'Oslo',
 				points: 0.7,
 			},
 			{
-				week: 39,
+				week: 38,
 				club: 'Trondheim',
 				points: 5.4,
 			},
 			{
-				week: 39,
+				week: 38,
 				club: 'Oslo',
 				points: 4.4,
 			},

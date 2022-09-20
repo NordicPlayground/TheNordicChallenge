@@ -30,7 +30,7 @@ export const summaryDataToPointData = (
 				}
 			}
 			result.push({
-				week: weekNumber,
+				week: weekNumber - 1,
 				club: clubName,
 				points: officeData.clubPoints + oldPoints,
 			})
