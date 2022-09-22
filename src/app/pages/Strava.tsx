@@ -206,6 +206,41 @@ export const Strava = () => {
 						</table>
 					</div>
 				</div>
+				<div
+					style={{
+						width: '400',
+						height: '200',
+						display: 'flex',
+						justifyContent: 'space-around',
+						alignItems: 'center',
+					}}
+				>
+					<div className="progText">
+						<p
+							style={{
+								textAlign: 'center',
+								margin: '5px 10px 0 10px',
+								fontSize: '15px',
+							}}
+						>
+							<i>
+								Total distance goal is 14101.8km, we're now at{' '}
+								{totalDist2022.toFixed(1)}km.
+							</i>
+						</p>
+					</div>
+					<div className="hourText">
+						<p
+							style={{
+								textAlign: 'center',
+								margin: '5px 10px 0 10px',
+								fontSize: '15px',
+							}}
+						>
+							<i>Time is measured in minutes per club member.</i>
+						</p>
+					</div>
+				</div>
 				<br />
 				<br />
 				<br />

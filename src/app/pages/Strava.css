@@ -16,15 +16,20 @@ th,td{
 
 @media only screen and (max-width: 500px) {
     
-    .HoursTable {
+    .HoursTable{
         height: 150px;
         width: 150px;
         padding: 0
     }   
+
     .ProgressBar{
         width: 150px;
         height: 150px;
         margin-bottom: 20px;
+    }
+    .progText .hourText{
+        width: 150px;
+        height: 150px;
     }
     .progdiv{
       height: 230px;
