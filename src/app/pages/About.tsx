@@ -18,7 +18,8 @@ export const About = () => {
 					<p>
 						This ratio counts for the following activities: <b>Ride</b>,{' '}
 						<b>Virtual Bike</b>, <b>Roller Ski</b>,<b> Nordic Ski</b>,{' '}
-						<b>BackCountry Ski</b> and <b>Mountain Bike Ride</b>.
+						<b>BackCountry Ski</b>, <b>Gravel Ride</b> and{' '}
+						<b>Mountain Bike Ride</b>.
 					</p>
 					For the same reason, 1km of <b>swimming</b> equals 4km of
 					running/walking.
