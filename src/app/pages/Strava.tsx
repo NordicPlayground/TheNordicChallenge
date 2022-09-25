@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
+import { addTotalPoints } from 'utils/addTotalPoints'
 import { weekNumber } from 'utils/getWeek'
 import { HourlyPoints, SummaryData } from 'utils/hourlyPoints'
 import {
@@ -46,10 +47,18 @@ export type StravaObject = {
 export const Strava = () => {
 	const [exp, setExp] = useState<number>()
 	const [data, setData] = useState<StravaObject>()
+	const [dataWeek1, setDataWeek1] = useState<StravaObject>()
 	const totalDist2021 = 14101.8
-	let totalDist2022 = data?.totalData.totalDistance
-	if (totalDist2022 === undefined) {
-		totalDist2022 = 0
+	//calculating totaldist from last week and current week
+	let totalDist2022 = 0
+	if (
+		dataWeek1?.totalData.totalDistance === undefined ||
+		data?.totalData.totalDistance === undefined
+	) {
+		console.log('total distance undefined')
+	} else {
+		totalDist2022 =
+			data?.totalData.totalDistance + dataWeek1?.totalData.totalDistance
 	}
 	const fetchData = async () => {
 		const result = await fetch(
@@ -59,6 +68,17 @@ export const Strava = () => {
 		setExp(
 			parseInt(
 				result?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
+				10,
+			),
+		)
+		//fetching last weeks summary
+		const week1 = await fetch(
+			`https://lenakh97.github.io/Nordic-strava-application/summary-week-39.json?`,
+		)
+		setDataWeek1(await week1.json())
+		setExp(
+			parseInt(
+				week1?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
 				10,
 			),
 		)
@@ -96,6 +116,15 @@ export const Strava = () => {
 	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
 	const graphData: GraphData = pointData2GraphData(pointData)
 
+	//making a new summary, with hourly point
+	let graphSummaryDataPlusTotalPoints: SummaryData = sortedDataForGraph.map(
+		(s) => ({ ...s }),
+	)
+	// adding points from prev week from pointData to 'elevation' using elevation as 'totalpoints'
+	graphSummaryDataPlusTotalPoints = addTotalPoints(
+		graphSummaryDataPlusTotalPoints,
+		pointData,
+	)
 	const options = {
 		responsive: true,
 		interaction: {
@@ -269,7 +298,7 @@ export const Strava = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{sortedDataForGraph.map(
+							{graphSummaryDataPlusTotalPoints.map(
 								(
 									item: {
 										name: string
@@ -295,7 +324,7 @@ export const Strava = () => {
 											key={item.clubPoints - 2}
 											style={{ textAlign: 'right' }}
 										>
-											{item.clubPoints.toFixed(1)}
+											{item.elevation.toFixed(1)}
 										</td>
 									</tr>
 								),
