@@ -1,5 +1,5 @@
-import { addTotalPoints } from './addTotalPoints'
-import type { PointData } from './pointData2GraphData'
+import { addTotalPoints } from 'utils/addTotalPoints.js'
+import type { PointData } from 'utils/pointData2GraphData.js'
 
 export type Summary = {
 	name: string
@@ -30,22 +30,22 @@ describe('addTotalPoints()', () => {
 
 		const oldPointData: PointData = [
 			{
-				week: 37,
+				week: 38,
 				club: 'Finland',
 				points: 1.4,
 			},
 			{
-				week: 38,
+				week: 39,
 				club: 'Finland',
 				points: 5.4,
 			},
 			{
-				week: 37,
+				week: 38,
 				club: 'Poland',
 				points: 0.7,
 			},
 			{
-				week: 38,
+				week: 39,
 				club: 'Poland',
 				points: 4.4,
 			},

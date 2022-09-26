@@ -94,7 +94,7 @@ export const Strava = () => {
 		return () => clearInterval(interval)
 	}, [exp])
 
-	if (data?.summary === undefined) {
+	if (data?.summary === undefined || dataWeek1 === undefined) {
 		return (
 			<Main>
 				<h1>Data undefined</h1>
@@ -104,18 +104,35 @@ export const Strava = () => {
 
 	const summary: SummaryData = data?.summary
 	const hourSummary = [...summary]
+	const summaryWeek1: SummaryData = dataWeek1?.summary
+	const hourSummaryWeek1 = [...summaryWeek1]
 
 	const weeklyHoursSorted = (hourSummary ?? []).sort(
+		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
+	)
+
+	const weeklyHoursSortedWeek1 = (hourSummaryWeek1 ?? []).sort(
 		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
 	)
 
 	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
 	const graphSummaryData: StravaObject = { ...data }
 	graphSummaryData.summary = sortedDataForGraph
-	const summaryDataForGraph: StravaObject[] = [graphSummaryData]
+
+	const sortedDataForGraphWeek1 = HourlyPoints(
+		weeklyHoursSortedWeek1,
+		summaryWeek1,
+	)
+	const graphSummaryDataWeek1: StravaObject = { ...dataWeek1 }
+	graphSummaryDataWeek1.summary = sortedDataForGraphWeek1
+	graphSummaryDataWeek1.timestamp = 1664077513
+	const summaryDataForGraph: StravaObject[] = [
+		graphSummaryDataWeek1,
+		graphSummaryData,
+	]
+
 	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
 	const graphData: GraphData = pointData2GraphData(pointData)
-
 	//making a new summary, with hourly point
 	let graphSummaryDataPlusTotalPoints: SummaryData = sortedDataForGraph.map(
 		(s) => ({ ...s }),
