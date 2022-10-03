@@ -28,7 +28,8 @@ export const summaryDataToPointData = (
 			}
 			let oldPoints = 0
 			for (const res of result) {
-				if (res.club === clubName) {
+				if (res.club === clubName && res.week === weekNumber - 2) {
+					console.log(result)
 					oldPoints += res.points
 				}
 			}
