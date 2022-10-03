@@ -52,7 +52,7 @@ export const Strava = () => {
 	const totalDist2021 = 14101.8
 	const [dataWeek2, setDataWeek2] = useState<StravaObject>()
 
-	//calculating totaldist from last week and current week
+	//calculating totaldist from previous weeks and current week
 	let totalDist2022 = 0
 	if (
 		dataWeek2?.totalData.totalDistance === undefined ||
@@ -95,7 +95,7 @@ export const Strava = () => {
 		setDataWeek2(await week2.json())
 		setExp(
 			parseInt(
-				week1?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
+				week2?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
 				10,
 			),
 		)
@@ -123,6 +123,7 @@ export const Strava = () => {
 		)
 	}
 
+	//Extract the summaries from the data
 	const summary: SummaryData = data?.summary
 	const summaryWeek1: SummaryData = dataWeek1?.summary
 	const summaryWeek2: SummaryData = dataWeek2?.summary
@@ -132,33 +133,40 @@ export const Strava = () => {
 	const weeklyHoursSortedWeek1 = sortSummaryByHours(summaryWeek1)
 	const weeklyHoursSortedWeek2 = sortSummaryByHours(summaryWeek2)
 
+	//sort data from current week based og hourly points
 	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
 	const graphSummaryData: StravaObject = { ...data }
 	graphSummaryData.summary = sortedDataForGraph
 
+	//Sorted week1-data for graph with hourly points
 	const sortedDataForGraphWeek1 = HourlyPoints(
 		weeklyHoursSortedWeek1,
 		summaryWeek1,
 	)
 	const graphSummaryDataWeek1: StravaObject = { ...dataWeek1 }
 	graphSummaryDataWeek1.summary = sortedDataForGraphWeek1
+	//timestamp from summary is in the wrong week (timezone)
 	graphSummaryDataWeek1.timestamp = 1664077513
 
+	//Sorted week2-data for graph with hourly points
 	const sortedDataForGraphWeek2 = HourlyPoints(
 		weeklyHoursSortedWeek2,
 		summaryWeek2,
 	)
 	const graphSummaryDataWeek2: StravaObject = { ...dataWeek2 }
 	graphSummaryDataWeek2.summary = sortedDataForGraphWeek2
+	//timestamp from summary is in the wrong week (timezone)
 	graphSummaryDataWeek2.timestamp = 1664596756
 
+	//Array of summaries from all week to use in graph to calculate pointdata
 	const summaryDataForGraph: StravaObject[] = [
 		graphSummaryDataWeek1,
 		graphSummaryDataWeek2,
 		graphSummaryData,
 	]
-
+	//calculating point data based on summaryDataforGraph for all weeks
 	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
+	//takes pointdata and makes it into graphdata
 	const graphData: GraphData = pointData2GraphData(pointData)
 	//making a new summary, with hourly point
 	let graphSummaryDataPlusTotalPoints: SummaryData = sortedDataForGraph.map(
@@ -169,6 +177,7 @@ export const Strava = () => {
 		graphSummaryDataPlusTotalPoints,
 		pointData,
 	)
+	//optiongs used for the graph
 	const options = {
 		responsive: true,
 		interaction: {
