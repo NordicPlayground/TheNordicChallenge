@@ -1,4 +1,5 @@
 import { addTotalPoints } from 'utils/addTotalPoints.js'
+import { weekNumber } from 'utils/getWeek.js'
 import type { PointData } from 'utils/pointData2GraphData.js'
 
 export type Summary = {
@@ -30,22 +31,22 @@ describe('addTotalPoints()', () => {
 
 		const oldPointData: PointData = [
 			{
-				week: 39,
+				week: weekNumber - 2,
 				club: 'Finland',
 				points: 1.4,
 			},
 			{
-				week: 40,
+				week: weekNumber,
 				club: 'Finland',
 				points: 5.4,
 			},
 			{
-				week: 39,
+				week: weekNumber - 2,
 				club: 'Poland',
 				points: 0.7,
 			},
 			{
-				week: 40,
+				week: weekNumber,
 				club: 'Poland',
 				points: 4.4,
 			},
