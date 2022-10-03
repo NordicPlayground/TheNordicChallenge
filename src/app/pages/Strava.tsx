@@ -49,16 +49,21 @@ export const Strava = () => {
 	const [data, setData] = useState<StravaObject>()
 	const [dataWeek1, setDataWeek1] = useState<StravaObject>()
 	const totalDist2021 = 14101.8
+	const [dataWeek2, setDataWeek2] = useState<StravaObject>()
+
 	//calculating totaldist from last week and current week
 	let totalDist2022 = 0
 	if (
+		dataWeek2?.totalData.totalDistance === undefined ||
 		dataWeek1?.totalData.totalDistance === undefined ||
 		data?.totalData.totalDistance === undefined
 	) {
 		console.log('total distance undefined')
 	} else {
 		totalDist2022 =
-			data?.totalData.totalDistance + dataWeek1?.totalData.totalDistance
+			data?.totalData.totalDistance +
+			dataWeek1?.totalData.totalDistance +
+			dataWeek2?.totalData.totalDistance
 	}
 	const fetchData = async () => {
 		const result = await fetch(
@@ -82,6 +87,17 @@ export const Strava = () => {
 				10,
 			),
 		)
+		//fetching week2 summary
+		const week2 = await fetch(
+			`https://lenakh97.github.io/Nordic-strava-application/summary-week-40.json?`,
+		)
+		setDataWeek2(await week2.json())
+		setExp(
+			parseInt(
+				week1?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
+				10,
+			),
+		)
 	}
 	useEffect(() => {
 		if (exp === undefined) {
@@ -94,7 +110,11 @@ export const Strava = () => {
 		return () => clearInterval(interval)
 	}, [exp])
 
-	if (data?.summary === undefined || dataWeek1 === undefined) {
+	if (
+		data?.summary === undefined ||
+		dataWeek1 === undefined ||
+		dataWeek2 === undefined
+	) {
 		return (
 			<Main>
 				<h1>Data undefined</h1>
@@ -106,12 +126,18 @@ export const Strava = () => {
 	const hourSummary = [...summary]
 	const summaryWeek1: SummaryData = dataWeek1?.summary
 	const hourSummaryWeek1 = [...summaryWeek1]
+	const summaryWeek2: SummaryData = dataWeek2?.summary
+	const hourSummaryWeek2 = [...summaryWeek2]
 
 	const weeklyHoursSorted = (hourSummary ?? []).sort(
 		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
 	)
 
 	const weeklyHoursSortedWeek1 = (hourSummaryWeek1 ?? []).sort(
+		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
+	)
+
+	const weeklyHoursSortedWeek2 = (hourSummaryWeek2 ?? []).sort(
 		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
 	)
 
@@ -126,8 +152,18 @@ export const Strava = () => {
 	const graphSummaryDataWeek1: StravaObject = { ...dataWeek1 }
 	graphSummaryDataWeek1.summary = sortedDataForGraphWeek1
 	graphSummaryDataWeek1.timestamp = 1664077513
+
+	const sortedDataForGraphWeek2 = HourlyPoints(
+		weeklyHoursSortedWeek2,
+		summaryWeek2,
+	)
+	const graphSummaryDataWeek2: StravaObject = { ...dataWeek2 }
+	graphSummaryDataWeek2.summary = sortedDataForGraphWeek2
+	graphSummaryDataWeek2.timestamp = 1664596756
+
 	const summaryDataForGraph: StravaObject[] = [
 		graphSummaryDataWeek1,
+		graphSummaryDataWeek2,
 		graphSummaryData,
 	]
 

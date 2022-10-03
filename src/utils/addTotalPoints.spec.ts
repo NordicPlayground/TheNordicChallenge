@@ -30,22 +30,22 @@ describe('addTotalPoints()', () => {
 
 		const oldPointData: PointData = [
 			{
-				week: 38,
+				week: 39,
 				club: 'Finland',
 				points: 1.4,
 			},
 			{
-				week: 39,
+				week: 40,
 				club: 'Finland',
 				points: 5.4,
 			},
 			{
-				week: 38,
+				week: 39,
 				club: 'Poland',
 				points: 0.7,
 			},
 			{
-				week: 39,
+				week: 40,
 				club: 'Poland',
 				points: 4.4,
 			},
