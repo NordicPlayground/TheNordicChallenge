@@ -22,6 +22,7 @@ import {
 	PointData,
 	pointData2GraphData,
 } from 'utils/pointData2GraphData.js'
+import { sortSummaryByHours } from 'utils/sortSummaryByHours'
 import { summaryDataToPointData } from 'utils/summaryDataToPointData'
 ChartJS.register(
 	CategoryScale,
@@ -123,23 +124,13 @@ export const Strava = () => {
 	}
 
 	const summary: SummaryData = data?.summary
-	const hourSummary = [...summary]
 	const summaryWeek1: SummaryData = dataWeek1?.summary
-	const hourSummaryWeek1 = [...summaryWeek1]
 	const summaryWeek2: SummaryData = dataWeek2?.summary
-	const hourSummaryWeek2 = [...summaryWeek2]
 
-	const weeklyHoursSorted = (hourSummary ?? []).sort(
-		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
-	)
-
-	const weeklyHoursSortedWeek1 = (hourSummaryWeek1 ?? []).sort(
-		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
-	)
-
-	const weeklyHoursSortedWeek2 = (hourSummaryWeek2 ?? []).sort(
-		(a: { hours: number }, b: { hours: number }) => b.hours - a.hours,
-	)
+	//Make a copy of the summary, and sort it based on hours
+	const weeklyHoursSorted = sortSummaryByHours(summary)
+	const weeklyHoursSortedWeek1 = sortSummaryByHours(summaryWeek1)
+	const weeklyHoursSortedWeek2 = sortSummaryByHours(summaryWeek2)
 
 	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
 	const graphSummaryData: StravaObject = { ...data }
