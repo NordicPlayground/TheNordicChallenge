@@ -51,10 +51,12 @@ export const Strava = () => {
 	const [dataWeek1, setDataWeek1] = useState<StravaObject>()
 	const totalDist2021 = 14101.8
 	const [dataWeek2, setDataWeek2] = useState<StravaObject>()
+	const [dataWeek3, setDataWeek3] = useState<StravaObject>()
 
 	//calculating totaldist from previous weeks and current week
 	let totalDist2022 = 0
 	if (
+		dataWeek3?.totalData.totalDistance === undefined ||
 		dataWeek2?.totalData.totalDistance === undefined ||
 		dataWeek1?.totalData.totalDistance === undefined ||
 		data?.totalData.totalDistance === undefined
@@ -64,7 +66,8 @@ export const Strava = () => {
 		totalDist2022 =
 			data?.totalData.totalDistance +
 			dataWeek1?.totalData.totalDistance +
-			dataWeek2?.totalData.totalDistance
+			dataWeek2?.totalData.totalDistance +
+			dataWeek3?.totalData.totalDistance
 	}
 	const fetchData = async () => {
 		const result = await fetch(
@@ -99,6 +102,17 @@ export const Strava = () => {
 				10,
 			),
 		)
+		//fetching week3 summary
+		const week3 = await fetch(
+			`https://lenakh97.github.io/Nordic-strava-application/summary-week-41.json?`,
+		)
+		setDataWeek3(await week3.json())
+		setExp(
+			parseInt(
+				week3?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
+				10,
+			),
+		)
 	}
 	useEffect(() => {
 		if (exp === undefined) {
@@ -114,7 +128,8 @@ export const Strava = () => {
 	if (
 		data?.summary === undefined ||
 		dataWeek1 === undefined ||
-		dataWeek2 === undefined
+		dataWeek2 === undefined ||
+		dataWeek3 === undefined
 	) {
 		return (
 			<Main>
@@ -127,11 +142,13 @@ export const Strava = () => {
 	const summary: SummaryData = data?.summary
 	const summaryWeek1: SummaryData = dataWeek1?.summary
 	const summaryWeek2: SummaryData = dataWeek2?.summary
+	const summaryWeek3: SummaryData = dataWeek3?.summary
 
 	//Make a copy of the summary, and sort it based on hours
 	const weeklyHoursSorted = sortSummaryByHours(summary)
 	const weeklyHoursSortedWeek1 = sortSummaryByHours(summaryWeek1)
 	const weeklyHoursSortedWeek2 = sortSummaryByHours(summaryWeek2)
+	const weeklyHoursSortedWeek3 = sortSummaryByHours(summaryWeek3)
 
 	//sort data from current week based og hourly points
 	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
@@ -158,10 +175,21 @@ export const Strava = () => {
 	//timestamp from summary is in the wrong week (timezone)
 	graphSummaryDataWeek2.timestamp = 1664596756
 
+	//Sorted week3-data for graph with hourly points
+	const sortedDataForGraphWeek3 = HourlyPoints(
+		weeklyHoursSortedWeek3,
+		summaryWeek3,
+	)
+	const graphSummaryDataWeek3: StravaObject = { ...dataWeek3 }
+	graphSummaryDataWeek3.summary = sortedDataForGraphWeek3
+	//timestamp from summary is in the wrong week (timezone)
+	graphSummaryDataWeek3.timestamp = 1664803631
+
 	//Array of summaries from all week to use in graph to calculate pointdata
 	const summaryDataForGraph: StravaObject[] = [
 		graphSummaryDataWeek1,
 		graphSummaryDataWeek2,
+		graphSummaryDataWeek3,
 		graphSummaryData,
 	]
 	//calculating point data based on summaryDataforGraph for all weeks
