@@ -15,7 +15,6 @@ import { Line } from 'react-chartjs-2'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { addTotalPoints } from 'utils/addTotalPoints'
-import { weekNumber } from 'utils/getWeek'
 import { HourlyPoints, SummaryData } from 'utils/hourlyPoints'
 import {
 	GraphData,
@@ -71,7 +70,7 @@ export const Strava = () => {
 	}
 	const fetchData = async () => {
 		const result = await fetch(
-			`https://lenakh97.github.io/Nordic-strava-application/summary-week-${weekNumber}.json?`,
+			`https://lenakh97.github.io/Nordic-strava-application/summary-week-42.json?`,
 		)
 		setData(await result.json())
 		setExp(
@@ -154,6 +153,7 @@ export const Strava = () => {
 	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
 	const graphSummaryData: StravaObject = { ...data }
 	graphSummaryData.summary = sortedDataForGraph
+	graphSummaryData.timestamp = 1665898292
 
 	//Sorted week1-data for graph with hourly points
 	const sortedDataForGraphWeek1 = HourlyPoints(
@@ -227,6 +227,10 @@ export const Strava = () => {
 			},
 		},
 	}
+	const tableData = (graphSummaryDataPlusTotalPoints ?? []).sort(
+		(a: { elevation: number }, b: { elevation: number }) =>
+			b.elevation - a.elevation,
+	)
 
 	return (
 		<Main>
@@ -365,7 +369,7 @@ export const Strava = () => {
 						alignItems: 'center',
 					}}
 				>
-					<h1>Results week {weekNumber - 1}</h1>
+					<h1>Results week {41}</h1>
 					<table>
 						<thead style={{ backgroundColor: 'rgba(0, 169, 206, 0.31)' }}>
 							<tr>
