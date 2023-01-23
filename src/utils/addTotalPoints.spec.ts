@@ -8,6 +8,7 @@ export type Summary = {
 	hours: number
 	clubPoints: number
 	elevation: number
+	totPoints?: number
 }[]
 
 describe('addTotalPoints()', () => {

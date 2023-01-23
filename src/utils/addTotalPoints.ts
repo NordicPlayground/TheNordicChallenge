@@ -14,9 +14,9 @@ export const addTotalPoints = (
 		for (const pointClub of pointData) {
 			if (
 				club.name.includes(`${pointClub.club}`) &&
-				pointClub.week === weekNumber - 2
+				pointClub.week === weekNumber - 1
 			) {
-				club.elevation = club.clubPoints + pointClub.points
+				club.totPoints = club.clubPoints + pointClub.points
 			}
 		}
 	}

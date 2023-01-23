@@ -15,6 +15,7 @@ import { Line } from 'react-chartjs-2'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { addTotalPoints } from 'utils/addTotalPoints'
+import { weekNumber } from 'utils/getWeek'
 import { HourlyPoints, SummaryData } from 'utils/hourlyPoints'
 import {
 	GraphData,
@@ -41,6 +42,7 @@ export type StravaObject = {
 		hours: number
 		clubPoints: number
 		elevation: number
+		totPoints?: number
 	}[]
 }
 
@@ -49,14 +51,15 @@ export const Strava = () => {
 	const [data, setData] = useState<StravaObject>()
 	const [dataWeek1, setDataWeek1] = useState<StravaObject>()
 	const totalDist2021 = 14101.8
-	const [dataWeek2, setDataWeek2] = useState<StravaObject>()
-	const [dataWeek3, setDataWeek3] = useState<StravaObject>()
+	//const [dataWeek2, setDataWeek2] = useState<StravaObject>()
+	//const [dataWeek3, setDataWeek3] = useState<StravaObject>()
 
 	//calculating totaldist from previous weeks and current week
 	let totalDist2022 = 0
-	if (
+
+	if (/*
 		dataWeek3?.totalData.totalDistance === undefined ||
-		dataWeek2?.totalData.totalDistance === undefined ||
+		dataWeek2?.totalData.totalDistance === undefined ||*/
 		dataWeek1?.totalData.totalDistance === undefined ||
 		data?.totalData.totalDistance === undefined
 	) {
@@ -64,14 +67,14 @@ export const Strava = () => {
 	} else {
 		totalDist2022 =
 			data?.totalData.totalDistance +
-			dataWeek1?.totalData.totalDistance +
+			dataWeek1?.totalData.totalDistance /*+
 			dataWeek2?.totalData.totalDistance +
-			dataWeek3?.totalData.totalDistance
+			dataWeek3?.totalData.totalDistance*/
 	}
 	const fetchData = async () => {
 		const result = await fetch(
-			`https://lenakh97.github.io/Nordic-strava-application/summary-week-42.json?`,
-		)
+			`https://lenakh97.github.io/Nordic-strava-application/summary-week-04.json?`,		
+			)
 		setData(await result.json())
 		setExp(
 			parseInt(
@@ -80,8 +83,9 @@ export const Strava = () => {
 			),
 		)
 		//fetching last weeks summary
+		
 		const week1 = await fetch(
-			`https://lenakh97.github.io/Nordic-strava-application/summary-week-39.json?`,
+			`https://lenakh97.github.io/Nordic-strava-application/summary-week-03.json?`,
 		)
 		setDataWeek1(await week1.json())
 		setExp(
@@ -89,7 +93,7 @@ export const Strava = () => {
 				week1?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
 				10,
 			),
-		)
+		)/*
 		//fetching week2 summary
 		const week2 = await fetch(
 			`https://lenakh97.github.io/Nordic-strava-application/summary-week-40.json?`,
@@ -111,7 +115,7 @@ export const Strava = () => {
 				week3?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
 				10,
 			),
-		)
+		)*/
 	}
 	useEffect(() => {
 		if (exp === undefined) {
@@ -126,9 +130,9 @@ export const Strava = () => {
 
 	if (
 		data?.summary === undefined ||
-		dataWeek1 === undefined ||
+		dataWeek1 === undefined /*||
 		dataWeek2 === undefined ||
-		dataWeek3 === undefined
+		dataWeek3 === undefined*/
 	) {
 		return (
 			<Main>
@@ -139,23 +143,24 @@ export const Strava = () => {
 
 	//Extract the summaries from the data
 	const summary: SummaryData = data?.summary
-	const summaryWeek1: SummaryData = dataWeek1?.summary
+	const summaryWeek1: SummaryData = dataWeek1?.summary/*
 	const summaryWeek2: SummaryData = dataWeek2?.summary
-	const summaryWeek3: SummaryData = dataWeek3?.summary
+	const summaryWeek3: SummaryData = dataWeek3?.summary*/
 
 	//Make a copy of the summary, and sort it based on hours
 	const weeklyHoursSorted = sortSummaryByHours(summary)
-	const weeklyHoursSortedWeek1 = sortSummaryByHours(summaryWeek1)
+	const weeklyHoursSortedWeek1 = sortSummaryByHours(summaryWeek1)/*
 	const weeklyHoursSortedWeek2 = sortSummaryByHours(summaryWeek2)
-	const weeklyHoursSortedWeek3 = sortSummaryByHours(summaryWeek3)
+	const weeklyHoursSortedWeek3 = sortSummaryByHours(summaryWeek3)*/
 
 	//sort data from current week based og hourly points
 	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
 	const graphSummaryData: StravaObject = { ...data }
 	graphSummaryData.summary = sortedDataForGraph
-	graphSummaryData.timestamp = 1665898292
+	graphSummaryData.timestamp = graphSummaryData.timestamp-3600
 
 	//Sorted week1-data for graph with hourly points
+	
 	const sortedDataForGraphWeek1 = HourlyPoints(
 		weeklyHoursSortedWeek1,
 		summaryWeek1,
@@ -163,8 +168,8 @@ export const Strava = () => {
 	const graphSummaryDataWeek1: StravaObject = { ...dataWeek1 }
 	graphSummaryDataWeek1.summary = sortedDataForGraphWeek1
 	//timestamp from summary is in the wrong week (timezone)
-	graphSummaryDataWeek1.timestamp = 1664077513
-
+	graphSummaryDataWeek1.timestamp = graphSummaryDataWeek1.timestamp-3600
+/*
 	//Sorted week2-data for graph with hourly points
 	const sortedDataForGraphWeek2 = HourlyPoints(
 		weeklyHoursSortedWeek2,
@@ -184,18 +189,21 @@ export const Strava = () => {
 	graphSummaryDataWeek3.summary = sortedDataForGraphWeek3
 	//timestamp from summary is in the wrong week (timezone)
 	graphSummaryDataWeek3.timestamp = 1664803631
-
+*/
 	//Array of summaries from all week to use in graph to calculate pointdata
 	const summaryDataForGraph: StravaObject[] = [
-		graphSummaryDataWeek1,
+		graphSummaryDataWeek1,/*
 		graphSummaryDataWeek2,
-		graphSummaryDataWeek3,
+		graphSummaryDataWeek3,*/
 		graphSummaryData,
 	]
+	console.log(summaryDataForGraph)
 	//calculating point data based on summaryDataforGraph for all weeks
 	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
+	console.log('pointdata:', pointData)
 	//takes pointdata and makes it into graphdata
 	const graphData: GraphData = pointData2GraphData(pointData)
+	console.log('graphData;', graphData)
 	//making a new summary, with hourly point
 	let graphSummaryDataPlusTotalPoints: SummaryData = sortedDataForGraph.map(
 		(s) => ({ ...s }),
@@ -205,6 +213,7 @@ export const Strava = () => {
 		graphSummaryDataPlusTotalPoints,
 		pointData,
 	)
+	console.log('se her' ,graphSummaryDataPlusTotalPoints)
 	//optiongs used for the graph
 	const options = {
 		responsive: true,
@@ -227,9 +236,10 @@ export const Strava = () => {
 			},
 		},
 	}
-	const tableData = (graphSummaryDataPlusTotalPoints ?? []).sort(
-		(a: { elevation: number }, b: { elevation: number }) =>
-			b.elevation - a.elevation,
+
+	;(graphSummaryDataPlusTotalPoints ?? []).sort(
+		(a: { totPoints?: number }, b: { totPoints?: number }) =>
+			(b.totPoints??0) - (a.totPoints??0),
 	)
 
 	return (
@@ -369,7 +379,7 @@ export const Strava = () => {
 						alignItems: 'center',
 					}}
 				>
-					<h1>Results week {41}</h1>
+					<h1>Results week {weekNumber}</h1>
 					<table>
 						<thead style={{ backgroundColor: 'rgba(0, 169, 206, 0.31)' }}>
 							<tr>
@@ -390,7 +400,7 @@ export const Strava = () => {
 										distance: number
 										hours: number
 										clubPoints: number
-										elevation: number
+										totPoints?: number
 									},
 									k,
 								) => (
@@ -409,7 +419,7 @@ export const Strava = () => {
 											key={item.clubPoints - 2}
 											style={{ textAlign: 'right' }}
 										>
-											{item.elevation.toFixed(1)}
+											{item.totPoints?.toFixed(1)}
 										</td>
 									</tr>
 								),

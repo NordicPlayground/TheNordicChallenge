@@ -12,8 +12,9 @@ export const summaryDataToPointData = (
 	for (const week of data) {
 		const weekNumber = getWeek(week.timestamp * 1000, {
 			weekStartsOn: 1,
-			firstWeekContainsDate: 1,
+			firstWeekContainsDate: 4,
 		})
+		console.log(weekNumber)
 		for (const officeData of week.summary) {
 			let clubName = officeData.name.split('- ').pop()
 			if (clubName === undefined) {
@@ -28,13 +29,13 @@ export const summaryDataToPointData = (
 			}
 			let oldPoints = 0
 			for (const res of result) {
-				if (res.club === clubName && res.week === weekNumber - 2) {
+				if (res.club === clubName && res.week === weekNumber - 1) {
 					console.log(result)
 					oldPoints += res.points
 				}
 			}
 			result.push({
-				week: weekNumber - 1,
+				week: weekNumber,
 				club: clubName,
 				points: officeData.clubPoints + oldPoints,
 			})

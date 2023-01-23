@@ -4,6 +4,7 @@ export type SummaryData = {
 	hours: number
 	clubPoints: number
 	elevation: number
+	totPoints?: number
 }[]
 
 export const HourlyPoints = (
