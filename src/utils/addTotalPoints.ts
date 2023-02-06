@@ -13,13 +13,12 @@ export const addTotalPoints = (
 	for (const club of newData) {
 		for (const pointClub of pointData) {
 			if (
-				club.name.includes(`${pointClub.club}`) &&
+				club.name.includes(pointClub.club) &&
 				pointClub.week === weekNumber - 1
 			) {
 				club.totPoints = club.clubPoints + pointClub.points
 			}
 		}
 	}
-
 	return data
 }
