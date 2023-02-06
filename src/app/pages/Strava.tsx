@@ -14,17 +14,19 @@ import { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
+import { addSortedSummaryToStravaObject } from 'utils/addSortedSummaryToStravaObject'
 import { addTotalPoints } from 'utils/addTotalPoints'
 import { fetchWeekData } from 'utils/fetchWeekData'
 import { getSummaries } from 'utils/getSummaries'
 import { weekNumber } from 'utils/getWeek'
-import { HourlyPoints, SummaryData } from 'utils/hourlyPoints'
+import type { SummaryData } from 'utils/hourlyPoints'
 import {
 	GraphData,
 	PointData,
 	pointData2GraphData,
 } from 'utils/pointData2GraphData.js'
-import { sortSummaryByHours } from 'utils/sortSummaryByHours'
+import { sortSummaryHours } from 'utils/sortSummaryHours'
+import { sortWeeklyDataByHours } from 'utils/sortWeeklyDataByHours'
 import { summaryDataToPointData } from 'utils/summaryDataToPointData'
 ChartJS.register(
 	CategoryScale,
@@ -87,35 +89,22 @@ export const Strava = () => {
 	}
 
 	//Extract the summaries from the data
-
 	const summaryArray = getSummaries(weeklyData)
 
 	//Make a copy of the summary, and sort it based on hours
-	const weeklyHoursSortedArray = []
-	for (const summary of summaryArray) {
-		weeklyHoursSortedArray.push(sortSummaryByHours(summary))
-	}
+	const weeklyHoursSortedArray = sortSummaryHours(summaryArray)
 
 	//sort data from all the weeks based on hourly points
-	const sortedDataForGraph = []
-	let i = 0
-	for (const sortedHours of weeklyHoursSortedArray) {
-		const summary = summaryArray[i]
-		sortedDataForGraph.push(HourlyPoints(sortedHours, summary))
-		i++
-	}
+	const sortedDataForGraph = sortWeeklyDataByHours(
+		weeklyHoursSortedArray,
+		summaryArray,
+	)
+
 	//Making a copy of the Strava object and add sorted summary
-	let j = 0
-	const summaryDataForGraph = []
-	for (const sortedData of sortedDataForGraph) {
-		const newObj: StravaObject = { ...weeklyData[j] }
-		newObj.summary = sortedData
-		//timestamp from prev week is wrong due to GMT timezone,
-		//adding one hour to put the summary in the correct week
-		newObj.timestamp = newObj.timestamp - 3600
-		summaryDataForGraph.push(newObj)
-		j++
-	}
+	const summaryDataForGraph = addSortedSummaryToStravaObject(
+		sortedDataForGraph,
+		weeklyData,
+	)
 
 	//calculating point data based on summaryDataforGraph for all weeks
 	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
@@ -135,7 +124,7 @@ export const Strava = () => {
 		sortedDataForGraph.length - 1
 	].map((s) => ({ ...s }))
 
-	// adding points from prev week from pointData to 'elevation' using elevation as 'totalpoints'
+	// adding points from prev week from pointData to property 'totpoints'
 	graphSummaryDataPlusTotalPoints = addTotalPoints(
 		graphSummaryDataPlusTotalPoints,
 		pointData,
