@@ -6,7 +6,7 @@ export const fetchWeekData = async (): Promise<{
 }> => {
 	const weekData = []
 	let exp
-	for (let weekNum = 4; weekNum < 8; weekNum++) {
+	for (let weekNum = 5; weekNum < 9; weekNum++) {
 		try {
 			const res = await fetch(
 				`https://lenakh97.github.io/Nordic-strava-application/summary-week-${weekNum
