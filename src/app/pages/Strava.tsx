@@ -48,7 +48,7 @@ export const Strava = () => {
 	const [exp, setExp] = useState<number>()
 	const [data, setData] = useState<StravaObject>()
 	const [dataWeek1, setDataWeek1] = useState<StravaObject>()
-	const totalDist2021 = 14101.8
+	const totalDist2022H = 15726.7
 	const [dataWeek2, setDataWeek2] = useState<StravaObject>()
 	const [dataWeek3, setDataWeek3] = useState<StravaObject>()
 
@@ -256,8 +256,8 @@ export const Strava = () => {
 						<h1>Distance goal</h1>
 						<div className="ProgressBar">
 							<CircularProgressbar
-								value={(totalDist2022 / totalDist2021) * 100}
-								text={`${Math.round((totalDist2022 / totalDist2021) * 100)}%`}
+								value={(totalDist2022 / totalDist2022H) * 100}
+								text={`${Math.round((totalDist2022 / totalDist2022H) * 100)}%`}
 								styles={buildStyles({
 									// Rotation of path and trail, in number of turns (0-1)
 									rotation: 0,
