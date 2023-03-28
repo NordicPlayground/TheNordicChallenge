@@ -1,6 +1,16 @@
 import type { WeeklySummary } from 'app/pages/Strava.js'
-import type { GraphData } from 'utils/pointData2GraphData.js'
 import { teamColors } from 'utils/teamColors.js'
+
+export type GraphData = {
+	labels: string[]
+	datasets: {
+		label: string
+		data: number[]
+		fill: boolean
+		borderColor: string
+		tension: number
+	}[]
+}
 
 export const summaryDataToGraphData = (
 	weeklySummary: WeeklySummary[],
@@ -11,12 +21,10 @@ export const summaryDataToGraphData = (
 	for (const week of weeklySummary) {
 		result.labels.push(`Week ${week.weekNumber}`)
 		for (const team of week.teamInformation) {
-			console.log(team)
 			let duplicate = false
 			for (const dataset of result.datasets) {
 				if (dataset.label.includes(team.teamName)) {
 					const lastWeekPoint = dataset.data.slice(-1)
-					console.log(lastWeekPoint)
 					let thisWeeksPoints = 0
 					if (lastWeekPoint === undefined) {
 						thisWeeksPoints = team.points
@@ -35,9 +43,7 @@ export const summaryDataToGraphData = (
 					borderColor: teamColors[team.teamName],
 					tension: 0.1,
 				})
-				console.log(team.teamName, result.datasets[0].data)
 			}
-			//console.log(team.teamName, result.datasets[0].data)
 		}
 	}
 	return result
