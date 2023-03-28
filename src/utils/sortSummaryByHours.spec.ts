@@ -1,39 +1,39 @@
-import type { Summary } from 'utils/addTotalPoints.spec'
+import type { TeamInformation } from 'app/pages/Strava.js'
 import { sortSummaryByHours } from 'utils/sortSummaryByHours.js'
 
 describe('sortSummary()', () => {
 	it('should sort a summary of Strava Data', () => {
-		const summary: Summary = [
+		const summary: TeamInformation = [
 			{
-				name: 'Nordic Semiconductor - Finland',
-				distance: 12.2,
-				hours: 0.032626633986928104,
-				clubPoints: 0.2,
-				elevation: 0.7,
+				distance: 1029.1915000000004,
+				minutesPerAthlete: 247.232,
+				points: 19.66958000000001,
+				teamId: 838205,
+				teamName: 'Finland',
 			},
 			{
-				name: 'Nordic Semiconductor - Poland',
-				distance: 2.2,
-				hours: 0.502016460905349793,
-				clubPoints: 0.1,
-				elevation: 0.2,
+				distance: 572.3494,
+				minutesPerAthlete: 392.68333333333334,
+				points: 36.18674814814814,
+				teamId: 982093,
+				teamName: 'Poland',
 			},
 		]
 
 		expect(sortSummaryByHours(summary)).toMatchObject([
 			{
-				name: 'Nordic Semiconductor - Poland',
-				distance: 2.2,
-				hours: 0.502016460905349793,
-				clubPoints: 0.1,
-				elevation: 0.2,
+				distance: 572.3494,
+				minutesPerAthlete: 392.68333333333334,
+				points: 36.18674814814814,
+				teamId: 982093,
+				teamName: 'Poland',
 			},
 			{
-				name: 'Nordic Semiconductor - Finland',
-				distance: 12.2,
-				hours: 0.032626633986928104,
-				clubPoints: 0.2,
-				elevation: 0.7,
+				distance: 1029.1915000000004,
+				minutesPerAthlete: 247.232,
+				points: 19.66958000000001,
+				teamId: 838205,
+				teamName: 'Finland',
 			},
 		])
 	})

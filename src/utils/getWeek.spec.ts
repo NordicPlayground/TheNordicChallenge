@@ -5,8 +5,8 @@ describe('getWeek()', () => {
 		expect(
 			getWeek(new Date(1663592441 * 1000), {
 				weekStartsOn: 1,
-				firstWeekContainsDate: 1,
+				firstWeekContainsDate: 4,
 			}),
-		).toEqual(39)
+		).toEqual(38)
 	})
 })

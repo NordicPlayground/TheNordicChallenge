@@ -14,15 +14,10 @@ import { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-import { addTotalPoints } from 'utils/addTotalPoints'
-import { HourlyPoints, SummaryData } from 'utils/hourlyPoints'
-import {
-	GraphData,
-	PointData,
-	pointData2GraphData,
-} from 'utils/pointData2GraphData.js'
+import { weekNumber } from 'utils/getWeek'
+import { options } from 'utils/graphOptions'
 import { sortSummaryByHours } from 'utils/sortSummaryByHours'
-import { summaryDataToPointData } from 'utils/summaryDataToPointData'
+import { summaryDataToGraphData } from 'utils/summaryDataToGraphData'
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
@@ -32,87 +27,51 @@ ChartJS.register(
 	Tooltip,
 	Legend,
 )
-export type StravaObject = {
-	timestamp: number
-	totalData: { totalDistance: number; totalHours: number; totalPoints: number }
-	summary: {
-		name: string
-		distance: number
-		hours: number
-		clubPoints: number
-		elevation: number
-	}[]
+
+export type WeeklySummary = {
+	weekNumber: number
+	distance: number
+	teamInformation: TeamInformation
+}
+
+export type TeamInformation = {
+	teamId: number
+	teamName: string
+	points: number
+	minutesPerAthlete: number
+	distance: number
+	totPoints?: number
+}[]
+
+export type Summary = {
+	overall: {
+		// Hardcoded goal from last year
+		distanceGoal: number
+		currentDistance: number
+		totalHours: number
+	}
+	weeks: WeeklySummary[]
 }
 
 export const Strava = () => {
 	const [exp, setExp] = useState<number>()
-	const [data, setData] = useState<StravaObject>()
-	const [dataWeek1, setDataWeek1] = useState<StravaObject>()
-	const totalDist2022H = 15726.7
-	const [dataWeek2, setDataWeek2] = useState<StravaObject>()
-	const [dataWeek3, setDataWeek3] = useState<StravaObject>()
+	const [timestreamData, setTimestreamData] = useState<Summary>()
+	const distanceGoal = timestreamData?.overall.distanceGoal
+	const currentDistance = timestreamData?.overall.currentDistance
 
-	//calculating totaldist from previous weeks and current week
-	let totalDist2022 = 0
-	if (
-		dataWeek3?.totalData.totalDistance === undefined ||
-		dataWeek2?.totalData.totalDistance === undefined ||
-		dataWeek1?.totalData.totalDistance === undefined ||
-		data?.totalData.totalDistance === undefined
-	) {
-		console.log('total distance undefined')
-	} else {
-		totalDist2022 =
-			data?.totalData.totalDistance +
-			dataWeek1?.totalData.totalDistance +
-			dataWeek2?.totalData.totalDistance +
-			dataWeek3?.totalData.totalDistance
-	}
 	const fetchData = async () => {
 		const result = await fetch(
-			`https://lenakh97.github.io/Nordic-strava-application/summary-week-42.json?`,
+			`https://l3svp5tprslh63jdazjgg6mdta0ocgkr.lambda-url.eu-central-1.on.aws/`,
 		)
-		setData(await result.json())
+		setTimestreamData(await result.json())
 		setExp(
 			parseInt(
 				result?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
 				10,
 			),
 		)
-		//fetching last weeks summary
-		const week1 = await fetch(
-			`https://lenakh97.github.io/Nordic-strava-application/summary-week-39.json?`,
-		)
-		setDataWeek1(await week1.json())
-		setExp(
-			parseInt(
-				week1?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
-				10,
-			),
-		)
-		//fetching week2 summary
-		const week2 = await fetch(
-			`https://lenakh97.github.io/Nordic-strava-application/summary-week-40.json?`,
-		)
-		setDataWeek2(await week2.json())
-		setExp(
-			parseInt(
-				week2?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
-				10,
-			),
-		)
-		//fetching week3 summary
-		const week3 = await fetch(
-			`https://lenakh97.github.io/Nordic-strava-application/summary-week-41.json?`,
-		)
-		setDataWeek3(await week3.json())
-		setExp(
-			parseInt(
-				week3?.headers.get('cache-control')?.split('=')?.[1] ?? '3600',
-				10,
-			),
-		)
 	}
+
 	useEffect(() => {
 		if (exp === undefined) {
 			fetchData().catch(console.error)
@@ -123,114 +82,39 @@ export const Strava = () => {
 		}, exp * 1000)
 		return () => clearInterval(interval)
 	}, [exp])
-
-	if (
-		data?.summary === undefined ||
-		dataWeek1 === undefined ||
-		dataWeek2 === undefined ||
-		dataWeek3 === undefined
-	) {
+	if (timestreamData === undefined) {
 		return (
 			<Main>
-				<h1>Data undefined</h1>
+				<h1>Data loading</h1>
+				<h4>
+					If you are looking at this page before 03.04.2023 the challenge has
+					not started.
+				</h4>
 			</Main>
 		)
 	}
-
-	//Extract the summaries from the data
-	const summary: SummaryData = data?.summary
-	const summaryWeek1: SummaryData = dataWeek1?.summary
-	const summaryWeek2: SummaryData = dataWeek2?.summary
-	const summaryWeek3: SummaryData = dataWeek3?.summary
-
-	//Make a copy of the summary, and sort it based on hours
-	const weeklyHoursSorted = sortSummaryByHours(summary)
-	const weeklyHoursSortedWeek1 = sortSummaryByHours(summaryWeek1)
-	const weeklyHoursSortedWeek2 = sortSummaryByHours(summaryWeek2)
-	const weeklyHoursSortedWeek3 = sortSummaryByHours(summaryWeek3)
-
-	//sort data from current week based og hourly points
-	const sortedDataForGraph = HourlyPoints(weeklyHoursSorted, summary)
-	const graphSummaryData: StravaObject = { ...data }
-	graphSummaryData.summary = sortedDataForGraph
-	graphSummaryData.timestamp = 1665898292
-
-	//Sorted week1-data for graph with hourly points
-	const sortedDataForGraphWeek1 = HourlyPoints(
-		weeklyHoursSortedWeek1,
-		summaryWeek1,
-	)
-	const graphSummaryDataWeek1: StravaObject = { ...dataWeek1 }
-	graphSummaryDataWeek1.summary = sortedDataForGraphWeek1
-	//timestamp from summary is in the wrong week (timezone)
-	graphSummaryDataWeek1.timestamp = 1664077513
-
-	//Sorted week2-data for graph with hourly points
-	const sortedDataForGraphWeek2 = HourlyPoints(
-		weeklyHoursSortedWeek2,
-		summaryWeek2,
-	)
-	const graphSummaryDataWeek2: StravaObject = { ...dataWeek2 }
-	graphSummaryDataWeek2.summary = sortedDataForGraphWeek2
-	//timestamp from summary is in the wrong week (timezone)
-	graphSummaryDataWeek2.timestamp = 1664596756
-
-	//Sorted week3-data for graph with hourly points
-	const sortedDataForGraphWeek3 = HourlyPoints(
-		weeklyHoursSortedWeek3,
-		summaryWeek3,
-	)
-	const graphSummaryDataWeek3: StravaObject = { ...dataWeek3 }
-	graphSummaryDataWeek3.summary = sortedDataForGraphWeek3
-	//timestamp from summary is in the wrong week (timezone)
-	graphSummaryDataWeek3.timestamp = 1664803631
-
-	//Array of summaries from all week to use in graph to calculate pointdata
-	const summaryDataForGraph: StravaObject[] = [
-		graphSummaryDataWeek1,
-		graphSummaryDataWeek2,
-		graphSummaryDataWeek3,
-		graphSummaryData,
-	]
-	//calculating point data based on summaryDataforGraph for all weeks
-	const pointData = summaryDataToPointData(summaryDataForGraph) as PointData
-	//takes pointdata and makes it into graphdata
-	const graphData: GraphData = pointData2GraphData(pointData)
-	//making a new summary, with hourly point
-	let graphSummaryDataPlusTotalPoints: SummaryData = sortedDataForGraph.map(
-		(s) => ({ ...s }),
-	)
-	// adding points from prev week from pointData to 'elevation' using elevation as 'totalpoints'
-	graphSummaryDataPlusTotalPoints = addTotalPoints(
-		graphSummaryDataPlusTotalPoints,
-		pointData,
-	)
-	//optiongs used for the graph
-	const options = {
-		responsive: true,
-		interaction: {
-			mode: 'index' as const,
-			intersect: false,
-		},
-		stacked: false,
-		plugins: {
-			title: {
-				display: true,
-				text: 'Strava competition - points',
-			},
-		},
-		scales: {
-			y: {
-				type: 'linear' as const,
-				display: true,
-				position: 'left' as const,
-			},
-		},
+	const currenWeektTeamInformation = []
+	for (const weeks of timestreamData.weeks) {
+		if (weeks.weekNumber === weekNumber) {
+			currenWeektTeamInformation.push(weeks.teamInformation)
+		}
 	}
-	const tableData = (graphSummaryDataPlusTotalPoints ?? []).sort(
-		(a: { elevation: number }, b: { elevation: number }) =>
-			b.elevation - a.elevation,
+	const weeklyHoursSorted = sortSummaryByHours(currenWeektTeamInformation[0])
+
+	const graphData = summaryDataToGraphData(timestreamData.weeks)
+
+	for (const team of graphData.datasets) {
+		for (const teamName of currenWeektTeamInformation[0]) {
+			if (team.label === teamName.teamName) {
+				teamName.totPoints = team.data.slice(-1)[0]
+			}
+		}
+	}
+
+	const tableData = (currenWeektTeamInformation[0] ?? []).sort(
+		(a: { points: number }, b: { points: number }) => b.points - a.points,
 	)
+	console.log(tableData)
 
 	return (
 		<Main>
@@ -256,8 +140,10 @@ export const Strava = () => {
 						<h1>Distance goal</h1>
 						<div className="ProgressBar">
 							<CircularProgressbar
-								value={(totalDist2022 / totalDist2022H) * 100}
-								text={`${Math.round((totalDist2022 / totalDist2022H) * 100)}%`}
+								value={((currentDistance ?? 0) / (distanceGoal ?? 0)) * 100}
+								text={`${Math.round(
+									((currentDistance ?? 0) / (distanceGoal ?? 0)) * 100,
+								)}%`}
 								styles={buildStyles({
 									// Rotation of path and trail, in number of turns (0-1)
 									rotation: 0,
@@ -283,6 +169,7 @@ export const Strava = () => {
 							/>
 						</div>
 					</div>
+
 					<div>
 						<h1
 							style={{
@@ -303,19 +190,24 @@ export const Strava = () => {
 							<tbody>
 								{weeklyHoursSorted
 									.slice(0, 4)
-									.map((item: { name: string; hours: number }, k) => (
-										<tr key={k}>
-											<td style={{ padding: '2px 10px' }} key={item.name}>
-												{item.name.split('-').pop()}
-											</td>
-											<td
-												style={{ padding: '2px 10px', textAlign: 'right' }}
-												key={item.hours}
-											>
-												{Math.round(item.hours * 60)}
-											</td>
-										</tr>
-									))}
+									.map(
+										(
+											item: { teamName: string; minutesPerAthlete: number },
+											k,
+										) => (
+											<tr key={k}>
+												<td style={{ padding: '2px 10px' }} key={item.teamName}>
+													{item.teamName.split('-').pop()}
+												</td>
+												<td
+													style={{ padding: '2px 10px', textAlign: 'right' }}
+													key={item.minutesPerAthlete}
+												>
+													{Math.round(item.minutesPerAthlete)}
+												</td>
+											</tr>
+										),
+									)}
 							</tbody>
 						</table>
 					</div>
@@ -338,11 +230,12 @@ export const Strava = () => {
 							}}
 						>
 							<i>
-								Total distance goal is 14101.8km, we're now at{' '}
-								{totalDist2022.toFixed(1)}km.
+								Total distance goal is 15726.7km, we're now at{' '}
+								{currentDistance?.toFixed(1)}km.
 							</i>
 						</p>
 					</div>
+
 					<div className="hourText">
 						<p
 							style={{
@@ -369,7 +262,7 @@ export const Strava = () => {
 						alignItems: 'center',
 					}}
 				>
-					<h1>Results week {41}</h1>
+					<h1>Results week {weekNumber}</h1>
 					<table>
 						<thead style={{ backgroundColor: 'rgba(0, 169, 206, 0.31)' }}>
 							<tr>
@@ -383,33 +276,35 @@ export const Strava = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{graphSummaryDataPlusTotalPoints.map(
+							{tableData.map(
 								(
 									item: {
-										name: string
+										teamName: string
 										distance: number
-										hours: number
-										clubPoints: number
-										elevation: number
+										minutesPerAthlete: number
+										points: number
+										totPoints?: number
 									},
 									k,
 								) => (
 									<tr key={k}>
-										<td key={item.name}>{item.name.split('-').pop()}</td>
-										<td key={item.clubPoints} style={{ textAlign: 'right' }}>
-											{item.clubPoints.toFixed(1)}
+										<td key={item.teamName}>
+											{item.teamName.split('-').pop()}
+										</td>
+										<td key={item.points} style={{ textAlign: 'right' }}>
+											{item.points.toFixed(1)}
 										</td>
 										<td key={item.distance} style={{ textAlign: 'right' }}>
 											{Math.round(item.distance)}
 										</td>
-										<td key={item.hours} style={{ textAlign: 'right' }}>
-											{Math.round(item.hours * 60)}
-										</td>
 										<td
-											key={item.clubPoints - 2}
+											key={item.minutesPerAthlete}
 											style={{ textAlign: 'right' }}
 										>
-											{item.elevation.toFixed(1)}
+											{Math.round(item.minutesPerAthlete)}
+										</td>
+										<td key={item.points - 2} style={{ textAlign: 'right' }}>
+											{item.totPoints?.toFixed(1)}
 										</td>
 									</tr>
 								),
