@@ -86,10 +86,6 @@ export const Strava = () => {
 		return (
 			<Main>
 				<h1>Data loading</h1>
-				<h4>
-					If you are looking at this page before 03.04.2023 the challenge has
-					not started.
-				</h4>
 			</Main>
 		)
 	}
