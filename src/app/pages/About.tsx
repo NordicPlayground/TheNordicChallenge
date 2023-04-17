@@ -50,7 +50,7 @@ export const About = () => {
 						in your local club, and let her follow you back to be included in
 						the statistics. The "Only you" option will not be part of the club
 						statistics.
-						<strong> Muted activited is not included in the statistics.</strong>
+						<strong>Muted activites are not included in the statistics.</strong>
 					</p>
 				</div>
 			</div>
