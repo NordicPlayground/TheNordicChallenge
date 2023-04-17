@@ -8,7 +8,8 @@ export const About = () => {
 				<div className="card-body">
 					<p>
 						Each week the kilometers for each club will be added up and then
-						divided by the size of the office/location headcount.
+						divided by the size of the office/location headcount. Inactive users
+						will not count in the calculations.
 					</p>
 					<p>
 						As biking/skiing is more efficient in km than running/walking, we
