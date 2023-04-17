@@ -59,9 +59,7 @@ export const About = () => {
 				<div className="card-body">
 					<dl>
 						<ul>
-							<li>
-								The challenge starts Semptember 19th and ends October 16th.
-							</li>
+							<li>The challenge starts April 17th and ends May 15th.</li>
 							<li>
 								You need a user account on Strava to participate{' '}
 								<a href="https://www.strava.com">www.strava.com</a>
