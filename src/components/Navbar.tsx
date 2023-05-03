@@ -72,9 +72,20 @@ export const Navbar = () => {
 									</Link>
 								</li>
 								<li className="nav-item">
-									<Link className="nav-link" to="/clubGoals" onClick={close}>
+									<Link className="nav-link" to="/clubgoals" onClick={close}>
 										<IconWithText>
 											<AwardIcon /> Club Goals
+										</IconWithText>
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link
+										className="nav-link"
+										to="/weeklysummaries"
+										onClick={close}
+									>
+										<IconWithText>
+											<AwardIcon /> Weekly Summaries
 										</IconWithText>
 									</Link>
 								</li>

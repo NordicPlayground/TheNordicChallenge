@@ -13,6 +13,19 @@ th,td{
     height: 200px;
 
  }
+ .resultTable{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin: 5px;
+ }
+ .tableRowResults{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+ }
 
 @media only screen and (max-width: 500px) {
     
@@ -34,6 +47,8 @@ th,td{
     .progdiv{
       height: 230px;
     }
-
+    .tableRowResults{
+        flex-direction: column;
+    }
  }
 
