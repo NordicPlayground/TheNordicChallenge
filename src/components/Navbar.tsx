@@ -1,4 +1,9 @@
-import { GameIcon, IconWithText, InfoIcon } from 'components/FeatherIcon'
+import {
+	AwardIcon,
+	GameIcon,
+	IconWithText,
+	InfoIcon,
+} from 'components/FeatherIcon'
 import styles from 'components/Navbar.module.css'
 import { useAppConfig } from 'hooks/useAppConfig'
 import { useState } from 'react'
@@ -63,6 +68,13 @@ export const Navbar = () => {
 									<Link className="nav-link" to="/about" onClick={close}>
 										<IconWithText>
 											<InfoIcon /> About
+										</IconWithText>
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link className="nav-link" to="/clubGoals" onClick={close}>
+										<IconWithText>
+											<AwardIcon /> Club Goals
 										</IconWithText>
 									</Link>
 								</li>

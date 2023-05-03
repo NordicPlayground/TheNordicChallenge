@@ -40,7 +40,10 @@
     "react-chartjs-2": "^4.3.1",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.4.0"
+    "react-native": "^0.71.7",
+    "react-native-check-box": "^2.1.7",
+    "react-router-dom": "6.4.0",
+    "react-select": "^5.7.3"
   },
   "devDependencies": {
     "@nordicsemiconductor/asset-tracker-cloud-code-style": "11.0.125",

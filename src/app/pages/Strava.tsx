@@ -49,6 +49,7 @@ export type Summary = {
 		distanceGoal: number
 		currentDistance: number
 		totalHours: number
+		teamInfo: Record<string, { memberCount: number }>
 	}
 	weeks: WeeklySummary[]
 }
