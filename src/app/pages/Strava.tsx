@@ -90,9 +90,12 @@ export const Strava = () => {
 			</Main>
 		)
 	}
-	const currenWeektTeamInformation = []
+	let currenWeektTeamInformation = []
 	for (const weeks of timestreamData.weeks) {
 		if (weeks.weekNumber === weekNumber) {
+			currenWeektTeamInformation.push(weeks.teamInformation)
+		} else {
+			currenWeektTeamInformation = []
 			currenWeektTeamInformation.push(weeks.teamInformation)
 		}
 	}
