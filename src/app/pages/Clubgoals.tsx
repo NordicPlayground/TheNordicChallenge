@@ -94,7 +94,7 @@ export const ClubGoals = () => {
 
 	const fetchData = async () => {
 		const result = await fetch(
-			`https://l3svp5tprslh63jdazjgg6mdta0ocgkr.lambda-url.eu-central-1.on.aws/`,
+			`https://k66fzrj7leiarkgqtenq2udn3a0oznzh.lambda-url.us-east-2.on.aws/`,
 		)
 		setTimestreamData(await result.json())
 		setExp(
@@ -129,7 +129,11 @@ export const ClubGoals = () => {
 		}
 	}
 	const teams = Object.keys(distanceRecord)
+	console.log(teams)
+	console.log(timestreamData)
+
 	for (const team of teams) {
+		console.log(team)
 		distanceRecord[team].activeAthletes =
 			timestreamData.overall.teamInfo[team].memberCount
 	}
