@@ -8,8 +8,9 @@ export const About = () => {
 				<div className="card-body">
 					<p>
 						Each week the kilometers for each club will be added up and then
-						divided by the size of the office/location headcount. Inactive users
-						will not count in the calculations.
+						divided by the size of the office/location headcount. By doing it
+						this way we make sure every activity counts positively against the
+						challenge, no matter how short.
 					</p>
 					<p>
 						As biking/skiing is more efficient in km than running/walking, we
@@ -33,6 +34,19 @@ export const About = () => {
 						All time spent doing activities counts towards the statistics, and
 						all activities not mentioned above will give a 1:1km ratio in the
 						statistics.
+					</p>
+					<p>
+						We are also giving points towards the challenge for the{' '}
+						<b>activities without distance</b>; like <b>Yoga</b>,{' '}
+						<b>WeightTraining</b> etc. The following formula shows how this is
+						done:
+					</p>
+					<p>
+						<b> Time [hours] * 5km</b>
+					</p>
+					<p>
+						This means that 1 hour of activity without distance is equivalent to
+						5km. 30 min of activity gives 2.5km and so on.
 					</p>
 				</div>
 			</div>
