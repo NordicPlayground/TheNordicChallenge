@@ -9,7 +9,6 @@ import { useAppConfig } from 'hooks/useAppConfig'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import stravaLogo from '/api_logo_pwrdBy_strava_stack_white.svg'
-import logo from '/logo-with-text.svg'
 
 export const Navbar = () => {
 	const {
@@ -32,13 +31,13 @@ export const Navbar = () => {
 				<div className="container-fluid">
 					<Link className="navbar-brand d-flex align-items-center" to="/">
 						<img
-							src={logo}
-							alt={name}
+							src={stravaLogo}
+							alt={'name'}
 							width="100"
-							height="24"
+							height="34"
 							className="d-inline-block align-text-top me-1"
 						/>
-						<span className={styles.assetName}>{shortName}</span>
+						<span className={styles.assetName}>The Nordic Challenge</span>
 					</Link>
 					<button
 						className="navbar-toggler"
@@ -93,13 +92,6 @@ export const Navbar = () => {
 							</ul>
 						</div>
 					</div>
-					<img
-						src={stravaLogo}
-						alt={'name'}
-						width="100"
-						height="34"
-						className="d-inline-block align-text-top me-1"
-					/>
 				</div>
 			</nav>
 		</header>
