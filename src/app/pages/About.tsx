@@ -7,14 +7,19 @@ export const About = () => {
 				<div className="card-header">About</div>
 				<div className="card-body">
 					<p>
-						Each week the kilometers for each club will be added up and then
-						divided by the size of the office/location headcount. Inactive users
-						will not count in the calculations.
+						Each week the points for each club will be added up and then divided
+						by the size of the office/location headcount. By doing it this way
+						we make sure every activity counts positively against the challenge,
+						no matter how short.
+					</p>
+					<p>
+						In general activities will give a 1 km = 1 point ratio in the
+						statistics, but we have some adjustments as described in this
+						section.
 					</p>
 					<p>
 						As biking/skiing is more efficient in km than running/walking, we
-						will be using a ratio for this, and for each 3km cycled = 1km
-						run/walk.{' '}
+						will be using a ratio for this, and for each 3km cycled = 1 points.{' '}
 					</p>
 					<p>
 						This ratio counts for the following activities: <b>Ride</b>,{' '}
@@ -22,17 +27,26 @@ export const About = () => {
 						<b>BackCountry Ski</b>, <b>Gravel Ride</b> and{' '}
 						<b>Mountain Bike Ride</b>.
 					</p>
-					For the same reason, 1km of <b>swimming</b> equals 4km of
-					running/walking.
+					For the same reason, 1km of <b>swimming</b> equals 4 points.
 					<p>
-						<b> E-Bike Ride </b> has a 5:1 km ratio.
+						<b> E-Bike Ride </b> has a 5 km = 1 points ratio.
 					</p>
-					<b> Snowboard </b>
-					and <b>Alpine Ski</b> is given 0km in the statistics.
 					<p>
-						All time spent doing activities counts towards the statistics, and
-						all activities not mentioned above will give a 1:1km ratio in the
-						statistics.
+						<b> Snowboard </b>
+						and <b>Alpine Ski</b> is given 0 distance but will give points as an{' '}
+						<b>activity without distance</b> as described below.
+					</p>
+					<p>
+						<b>Activities without distance</b>; like <b>Yoga</b>,{' '}
+						<b>WeightTraining</b> etc are given points based on time. The
+						following formula shows how this is done:
+					</p>
+					<p>
+						<b> Time [hours] * 5 points</b>
+					</p>
+					<p>
+						This means that 1 hour of activity without distance is equivalent to
+						5 points. 30 min of activity gives 2.5 points and so on.
 					</p>
 				</div>
 			</div>
@@ -60,7 +74,7 @@ export const About = () => {
 				<div className="card-body">
 					<dl>
 						<ul>
-							<li>The challenge starts April 17th and ends May 15th.</li>
+							<li>The challenge starts May 6th and ends June 2nd.</li>
 							<li>
 								You need a user account on Strava to participate{' '}
 								<a href="https://www.strava.com">www.strava.com</a>

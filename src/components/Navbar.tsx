@@ -92,6 +92,13 @@ export const Navbar = () => {
 							</ul>
 						</div>
 					</div>
+					<img
+						src={'/api_logo_pwrdBy_strava_stack_white.svg'}
+						alt={'name'}
+						width="100"
+						height="34"
+						className="d-inline-block align-text-top me-1"
+					/>
 				</div>
 			</nav>
 		</header>

@@ -54,7 +54,7 @@ export const WeeklySummaries = () => {
 
 	const fetchData = async () => {
 		const result = await fetch(
-			`https://l3svp5tprslh63jdazjgg6mdta0ocgkr.lambda-url.eu-central-1.on.aws/`,
+			`https://k66fzrj7leiarkgqtenq2udn3a0oznzh.lambda-url.us-east-2.on.aws/`,
 		)
 		setTimestreamData(await result.json())
 		setExp(

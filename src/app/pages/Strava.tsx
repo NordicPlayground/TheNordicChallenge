@@ -62,7 +62,7 @@ export const Strava = () => {
 
 	const fetchData = async () => {
 		const result = await fetch(
-			`https://l3svp5tprslh63jdazjgg6mdta0ocgkr.lambda-url.eu-central-1.on.aws/`,
+			`https://k66fzrj7leiarkgqtenq2udn3a0oznzh.lambda-url.us-east-2.on.aws/`,
 		)
 		setTimestreamData(await result.json())
 		setExp(
@@ -90,19 +90,89 @@ export const Strava = () => {
 			</Main>
 		)
 	}
+	let defaultWeekInfo: TeamInformation = [
+		{
+			teamName: 'Finland',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174164,
+			points: 0,
+		},
+
+		{
+			teamName: 'Poland',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174165,
+			points: 0,
+		},
+
+		{
+			teamName: 'Europe',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174166,
+			points: 0,
+		},
+
+		{
+			teamName: 'APAC',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174167,
+			points: 0,
+		},
+
+		{
+			teamName: 'USA',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174168,
+			points: 0,
+		},
+
+		{
+			teamName: 'Trondheim',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174140,
+			points: 0,
+		},
+
+		{
+			teamName: 'Omega',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174791,
+			points: 0,
+		},
+
+		{
+			teamName: 'Oslo',
+			minutesPerAthlete: 0,
+			distance: 0,
+			teamId: 1174162,
+			points: 0,
+		},
+	]
 	let currenWeektTeamInformation = []
 	for (const weeks of timestreamData.weeks) {
 		if (weeks.weekNumber === weekNumber) {
 			currenWeektTeamInformation.push(weeks.teamInformation)
-		} else {
-			currenWeektTeamInformation = []
-			currenWeektTeamInformation.push(weeks.teamInformation)
 		}
+		continue /*else {
+			console.log('else')
+			//currenWeektTeamInformation = []
+			currenWeektTeamInformation.push(weeks.teamInformation)
+		}*/
+	}
+	if (currenWeektTeamInformation.length === 0) {
+		currenWeektTeamInformation.push(defaultWeekInfo)
 	}
 	const weeklyHoursSorted = sortSummaryByHours(currenWeektTeamInformation[0])
 
 	const graphData = summaryDataToGraphData(timestreamData.weeks)
-
+	console.log('current', currenWeektTeamInformation)
 	for (const team of graphData.datasets) {
 		for (const teamName of currenWeektTeamInformation[0]) {
 			if (team.label === teamName.teamName) {
@@ -114,8 +184,8 @@ export const Strava = () => {
 	const tableData = (currenWeektTeamInformation[0] ?? []).sort(
 		(a: { points: number }, b: { points: number }) => b.points - a.points,
 	)
-	console.log(tableData)
-
+	console.log('tabledata', tableData)
+	console.log(weeklyHoursSorted)
 	return (
 		<Main>
 			<>
