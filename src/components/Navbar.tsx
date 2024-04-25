@@ -8,6 +8,7 @@ import styles from 'components/Navbar.module.css'
 import { useAppConfig } from 'hooks/useAppConfig'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import stravaLogo from '/api_logo_pwrdBy_strava_stack_white.svg'
 import logo from '/logo-with-text.svg'
 
 export const Navbar = () => {
@@ -93,7 +94,7 @@ export const Navbar = () => {
 						</div>
 					</div>
 					<img
-						src={'/api_logo_pwrdBy_strava_stack_white.svg'}
+						src={stravaLogo}
 						alt={'name'}
 						width="100"
 						height="34"
