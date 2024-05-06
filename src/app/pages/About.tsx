@@ -74,7 +74,7 @@ export const About = () => {
 				<div className="card-body">
 					<dl>
 						<ul>
-							<li>The challenge starts May 6th and ends June 2nd.</li>
+							<li>The challenge starts May 13th and ends June 9th.</li>
 							<li>
 								You need a user account on Strava to participate{' '}
 								<a href="https://www.strava.com">www.strava.com</a>
