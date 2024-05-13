@@ -23,16 +23,18 @@ export const About = () => {
 					</p>
 					<p>
 						This ratio counts for the following activities: <b>Ride</b>,{' '}
-						<b>Virtual Bike</b>, <b>Roller Ski</b>,<b> Nordic Ski</b>,{' '}
-						<b>BackCountry Ski</b>, <b>Gravel Ride</b> and{' '}
-						<b>Mountain Bike Ride</b>.
+						<b>Virtual Bike</b>, <b>Roller Ski</b>,<b> Nordic Ski</b>, and{' '}
+						<b>Gravel Ride</b>
+					</p>
+					<p>
+						<b>Mountain Bike Ride</b> has a 2 km = 1 point ratio.
 					</p>
 					For the same reason, 1km of <b>swimming</b> equals 4 points.
 					<p>
 						<b> E-Bike Ride </b> has a 5 km = 1 points ratio.
 					</p>
 					<p>
-						<b> Snowboard </b>
+						<b>Golf</b>, <b> Snowboard </b>
 						and <b>Alpine Ski</b> is given 0 distance but will give points as an{' '}
 						<b>activity without distance</b> as described below.
 					</p>
