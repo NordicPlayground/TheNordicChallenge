@@ -300,7 +300,7 @@ export const Strava = () => {
 							}}
 						>
 							<i>
-								Total distance goal is 15726.7km, we're now at{' '}
+								Total distance goal is 23202km, we're now at{' '}
 								{currentDistance?.toFixed(1)}km.
 							</i>
 						</p>
