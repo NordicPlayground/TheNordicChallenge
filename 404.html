@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+      const [folder, path] = window.location.pathname.slice(1).split("/", 2);
+      const params = new URLSearchParams();
+      params.set("redirect", path);
+      const { protocol, host } = window.location;
+      window.location.replace(
+        `${protocol}//${host}/${folder}?${params.toString()}`
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
